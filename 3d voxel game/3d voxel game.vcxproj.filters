@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Voxels">
       <UniqueIdentifier>{b43c318b-a5a4-43e4-91dd-51d4df61303e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\State">
+      <UniqueIdentifier>{0770f882-9a3d-41ed-967f-51ea6a14a6c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="Octree.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

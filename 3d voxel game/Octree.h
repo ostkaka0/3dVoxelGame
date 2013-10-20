@@ -61,20 +61,22 @@ public:
 		reinterpret_cast<char*>(&i)[2] << 1;
 		//reinterpret_cast<unsigned char*>(&i)[3]++;
 
-		void *child = childs[i&(1<<size)-1|i&(1<<(size<<1))-1|i&(1<<(size<<2))-1];
+		void *child = childs[(i>>31)&1|(i>>23)&1|(i>>15)&1];//void *child = childs[i&0x80000000|i&(1<<(size<<1))-1|i&(1<<(size<<2))-1];
 
-		if (child != nullptr)
+		if (!child)
+			return Element(nullptr, nullptr);
+
+		/*if (child != nullptr)
 		{
 			std::cout << typeid(child).name() << std::endl;
-		}
+		}*/
 
-		if (isOctree[i&(1<<size)-1|i&(1<<(size<<1))-1|i&(1<<(size<<2))-1])
-			return (*reinterpret_cast<Octree<T, size>**>
-			(childs)
-			[i&(1<<size)-1|i&(1<<(size<<1))-1|i&(1<<(size<<2))-1])
+		if (isOctree[(i>>31)&1|(i>>23)&1|(i>>15)&1])
+			return (*reinterpret_cast<Octree<T, size>*>
+			(childs[(i>>31)&1|(i>>23)&1|(i>>15)&1]))
 			[i];
 		else
-			return Element(child, &isOctree[i&(1<<size)-1|i&(1<<(size<<1))-1|i&(1<<(size<<2))-1]);
+			return Element(child, false);
 
 		/*if (child == nullptr)
 			return new Element<t,size>(child, &isOctree[i&(1<<size)-1|i&(1<<(size<<1))-1|i&(1<<(size<<2))-1]);
