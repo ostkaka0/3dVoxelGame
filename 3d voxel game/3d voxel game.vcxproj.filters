@@ -13,37 +13,49 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Blocks">
-      <UniqueIdentifier>{f01966db-4b19-4adb-ba10-03fe91404db6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Voxels">
-      <UniqueIdentifier>{605111d2-58fc-4676-8dda-19721ff4d8e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Blocks">
-      <UniqueIdentifier>{262d7c0f-5bec-4138-9792-e4dc6d7183f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Voxels">
-      <UniqueIdentifier>{b43c318b-a5a4-43e4-91dd-51d4df61303e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\State">
       <UniqueIdentifier>{0770f882-9a3d-41ed-967f-51ea6a14a6c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Voxel">
+      <UniqueIdentifier>{605111d2-58fc-4676-8dda-19721ff4d8e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Voxel\Block">
+      <UniqueIdentifier>{f01966db-4b19-4adb-ba10-03fe91404db6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Voxel">
+      <UniqueIdentifier>{b43c318b-a5a4-43e4-91dd-51d4df61303e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Voxel\Block">
+      <UniqueIdentifier>{262d7c0f-5bec-4138-9792-e4dc6d7183f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{4425a237-2e48-4f39-a859-1e765690f0b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{8b950319-e6a6-417f-90fd-348bdd1042bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{f85361d0-654b-47a4-8403-c3a7cff67e06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VoxelSolid.cpp">
-      <Filter>Source Files\Voxels</Filter>
-    </ClCompile>
-    <ClCompile Include="VoxelFreeColor.cpp">
-      <Filter>Source Files\Voxels</Filter>
-    </ClCompile>
     <ClCompile Include="Block.cpp">
-      <Filter>Source Files\Blocks</Filter>
+      <Filter>Source Files\Voxel\Block</Filter>
     </ClCompile>
     <ClCompile Include="Voxel.cpp">
-      <Filter>Source Files\Voxels</Filter>
+      <Filter>Source Files\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeColor.cpp">
+      <Filter>Source Files\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Solid.cpp">
+      <Filter>Source Files\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,25 +66,37 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
-      <Filter>Header Files\Blocks</Filter>
-    </ClInclude>
-    <ClInclude Include="VoxelFreeColor.h">
-      <Filter>Header Files\Voxels</Filter>
-    </ClInclude>
-    <ClInclude Include="VoxelSolid.h">
-      <Filter>Header Files\Voxels</Filter>
+      <Filter>Header Files\Voxel\Block</Filter>
     </ClInclude>
     <ClInclude Include="Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Voxel.h">
-      <Filter>Header Files\Voxels</Filter>
+      <Filter>Header Files\Voxel</Filter>
     </ClInclude>
     <ClInclude Include="Octree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeColor.h">
+      <Filter>Header Files\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Solid.h">
+      <Filter>Header Files\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="IDrawer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMatrix.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
