@@ -1,3 +1,14 @@
+#include "GameTest.h"
+
+int main()
+{
+	Game *&game = Game::getGame();
+	game = new GameTest();
+	game->Start();
+	return 0;
+}
+
+#ifdef NOOB
 /*#ifdef _WIN32
 #include <Windows.h>
 #elif defined linux
@@ -152,3 +163,4 @@ void FramebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
+#endif

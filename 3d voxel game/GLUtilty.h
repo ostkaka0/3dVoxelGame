@@ -1,4 +1,4 @@
-#ifdef _WIN32
+/*#ifdef _WIN32
 #include <Windows.h>
 #elif defined linux
 
@@ -11,4 +11,4 @@ struct Color
 	GLfloat red;
 	GLfloat green;
 	GLfloat blue;
-};
+};*/

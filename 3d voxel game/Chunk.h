@@ -1,3 +1,4 @@
+/*#pragma once
 #define _VET_INTE_ 8
 
 namespace voxel { class Voxel; }
@@ -20,4 +21,4 @@ namespace world
 			unsigned int z : 4;
 		};
 	};
-}
+}*/

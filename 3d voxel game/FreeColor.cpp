@@ -1,24 +1,22 @@
 #include "FreeColor.h"
 
-namespace voxel
+
+float FreeColor::GetRoundness()
 {
-	float FreeColor::GetRoundness()
-	{
-		return roundness;
-	}
+	return roundness;
+}
 
-	float FreeColor::GetDensity()
-	{
-		return density;
-	}
+float FreeColor::GetDensity()
+{
+	return density;
+}
 
-	Color FreeColor::GetColor()
-	{
-		return color;
-	}
+Color FreeColor::GetColor()
+{
+	return color;
+}
 
-	float FreeColor::GetOpacity()
+	/*float FreeColor::GetOpacity()
 	{
 		return opacity;
-	}
-}
+	}*/

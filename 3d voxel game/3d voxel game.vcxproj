@@ -43,8 +43,8 @@
     <LibraryPath>C:\libs\glfw-3.0.3\build\src\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\libs\glfw-3.0.3\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\libs\glfw-3.0.3\build\src\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\glfw-3.0.4.bin.WIN32\include;C:\glm;C:\glew-1.10.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\glew-1.10.0\lib\Release\Win32;C:\glfw-3.0.4.bin.WIN32\lib-msvc110;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -62,35 +62,48 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameTest.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RayTracer.cpp" />
-    <ClCompile Include="Voxel.cpp" />
+    <ClCompile Include="OpenglRenderer.cpp" />
     <ClCompile Include="FreeColor.cpp" />
     <ClCompile Include="Solid.cpp" />
+    <ClCompile Include="StateTest.cpp" />
+    <ClCompile Include="VoxelMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
-    <ClInclude Include="BlockRegister.h" />
+    <ClInclude Include="GL.h" />
+    <ClInclude Include="VoxelRegister.h" />
     <ClInclude Include="Chunk.h" />
-    <ClInclude Include="IDrawer.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameTest.h" />
+    <ClInclude Include="IMatrix.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="GLUtilty.h" />
     <ClInclude Include="Octree.h" />
-    <ClInclude Include="RayTracer.h" />
+    <ClInclude Include="OpenglRenderer.h" />
+    <ClInclude Include="RawVoxel.h" />
+    <ClInclude Include="RawVoxelMatrix.h" />
     <ClInclude Include="State.h" />
-    <ClInclude Include="Voxel.h" />
+    <ClInclude Include="IVoxel.h" />
     <ClInclude Include="FreeColor.h" />
     <ClInclude Include="Solid.h" />
+    <ClInclude Include="StateTest.h" />
+    <ClInclude Include="VoxelMatrix.h" />
     <ClInclude Include="WorldMatrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

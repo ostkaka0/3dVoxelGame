@@ -1,3 +1,5 @@
+/*
+#pragma once
 #include <iostream>
 #include <typeinfo>
 
@@ -69,7 +71,7 @@ public:
 		/*if (child != nullptr)
 		{
 			std::cout << typeid(child).name() << std::endl;
-		}*/
+		}*>.</
 
 		if (isOctree[(i>>31)&1|(i>>23)&1|(i>>15)&1])
 			return (*reinterpret_cast<Octree<T, size>*>
@@ -95,13 +97,13 @@ public:
 			[i&(1<<size)|i&(1<<(size<<1))|i&(1<<(size<<2))])
 			[i];
 		else
-			return childs[i&(1<<size)|i&(1<<(size<<1))|i&(1<<(size<<2))];*/
+			return childs[i&(1<<size)|i&(1<<(size<<1))|i&(1<<(size<<2))];*>.</
 	}
 
 	/*inline T* operator[] (size_t i)
 	{
 		return reinterpret_cast<T*>((*this)[i].element);
-	}*/
+	}*>.</
 
 	inline void *const getBlock(size_t i)
 	{
@@ -122,7 +124,7 @@ public:
 	/*inline T* operator[,,](size_t x, size_t y, size_t z)
 	{
 		(*this)[x | y >>size | z>>(size<<1)]
-	}*/
+	}*>.</
 //};
 
 //template<class T2, size_t size>
@@ -160,6 +162,7 @@ public:
 		inline Octree<T, size>* operator ()()
 		{
 			return static_cast<Octree<T, size>*>(child);
-		}*/
+		}*>.</
 	};
 };
+*/

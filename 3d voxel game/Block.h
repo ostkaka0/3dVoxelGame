@@ -1,4 +1,4 @@
-#include "Voxel.h"
+/*#include "Voxel.h"
 
 class Creature;
 
@@ -17,4 +17,4 @@ namespace voxel
 			virtual Block *OnReceive(/*Packet*, GameUtilty**/)=0;
 		};
 	}
-}
+}*/

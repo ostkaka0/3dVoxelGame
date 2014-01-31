@@ -1,4 +1,4 @@
-#include <deque>
+/*#include <deque>
 
 #define Deque(...) std::pair<std::deque<__VA_ARGS__>, long>
 
@@ -21,4 +21,4 @@ namespace world
 		void SetVoxel(long x, long y, long z, voxel::Voxel *voxel);
 
 	};
-}
+}*/

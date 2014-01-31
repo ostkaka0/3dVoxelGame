@@ -1,4 +1,4 @@
-#include "Voxel.h"
+/*#include "Voxel.h"
 
 namespace voxel
 {
@@ -6,4 +6,4 @@ namespace voxel
 	{
 
 	};
-}
+}*/
