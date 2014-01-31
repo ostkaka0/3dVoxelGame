@@ -32,7 +32,14 @@ public:
 
 #pragma region GL Events
 #ifdef CLIENT
-	virtual void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)=0;
+#pragma region input Events
+	virtual void MouseButtonCallback(int button, int action, int mods);
+	virtual void CursorPosCallback(int x, int y);
+	virtual void CursorEnterCallback(int entered);
+	virtual void ScrollCallback(int xOffset, int yOffset);
+	virtual void KeyCallback(int key, int scancode, int action, int mods);
+	virtual void CharCallback(unsigned int character);
+#pragma endregion
 #endif
 #pragma endregion
 
