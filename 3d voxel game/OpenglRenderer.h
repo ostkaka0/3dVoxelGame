@@ -1,4 +1,5 @@
 #pragma once
+#ifdef CLIENT
 
 #include "GL.h"
 #include "IRenderer.h"
@@ -12,15 +13,14 @@ public:
 	OpenglRenderer(Game *game, int width, int height);
 	~OpenglRenderer();
 #pragma region Matrix initializing
-	virtual int LoadVoxelMatrix(IMatrix *matrix);
-	virtual void DeleteVoxelMatrix(int matrixPtr);
 #pragma endregion
 #pragma region Matrix rendering
 	virtual void PushMatrix();
 	virtual void PopMatrix();
 
-	virtual void PushMatrix(int matrixPtr);
-	virtual void RenderMatrix(int matrixPtr);
+	//virtual void PushMatrix(int matrixPtr);
+	virtual void DeleteMatrix(GLuint matrixPtr, GLuint size);
+	virtual void RenderMatrix(IMatrix* matrix);
 #pragma endregion
 #pragma region Matrix modifying
 	virtual void Translate(float x, float y, float z);
@@ -32,3 +32,4 @@ public:
 	virtual void Clear();
 	virtual void Render(GLFWwindow *window);
 };
+#endif

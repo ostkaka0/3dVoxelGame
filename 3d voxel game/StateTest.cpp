@@ -3,6 +3,10 @@
 #include "Game.h"
 #include "IRenderer.h"
 
+void StateTest::Load(Game *game, EventHandler *eventHandler)
+{
+
+}
 
 void StateTest::Draw(Game *game, IRenderer *renderer)
 {

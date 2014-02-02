@@ -5,11 +5,13 @@ class GLFWwindow;
 #endif
 class IRenderer;
 class State;
+class EventHandler;
 
 class Game
 {
 protected:
 	State *state;
+	EventHandler *eventHandler;
 #ifdef CLIENT
 	IRenderer *renderer;
 	int width;
@@ -28,7 +30,7 @@ public:
 #ifdef CLIENT
 	virtual void Draw()=0;
 #endif
-	virtual void Error(const char *source, const char *description)=0;
+	virtual void Error(const char *source, const char *description);
 
 #pragma region GL Events
 #ifdef CLIENT
@@ -42,7 +44,6 @@ public:
 #pragma endregion
 #endif
 #pragma endregion
-
 	void Start();
 	void Exit();
 	void Restart();

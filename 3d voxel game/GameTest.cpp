@@ -17,7 +17,9 @@ GameTest::~GameTest()
 void GameTest::Initialize()
 {
 	state = new StateTest();
+#ifdef CLIENT
 	renderer = new OpenglRenderer(this, width, height);
+#endif
 }
 
 void GameTest::Update()
@@ -36,9 +38,9 @@ void GameTest::Error(const char *source, const char *description)
 	std::cout << "Error from class " << source << ": " << description;
 }
 
-#pragma region GL Events
+/*#pragma region GL Events
 void GameTest::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	std::cout << key << std::endl;
 }
-#pragma endregion
+#pragma endregion*/

@@ -73,9 +73,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="DrawableVertexBuffer.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameTest.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MatrixTerminal.cpp" />
     <ClCompile Include="OpenglRenderer.cpp" />
     <ClCompile Include="FreeColor.cpp" />
     <ClCompile Include="Solid.cpp" />
@@ -84,7 +87,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="DrawableVertexBuffer.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="GL.h" />
+    <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="MatrixTerminal.h" />
     <ClInclude Include="VoxelRegister.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Color.h" />

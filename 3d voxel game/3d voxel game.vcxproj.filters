@@ -73,6 +73,24 @@
     <Filter Include="Source Files\State">
       <UniqueIdentifier>{82f565a8-a4c9-43d6-8061-ae39df6b3269}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{f5505dd6-6524-4323-9488-5728de349150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events">
+      <UniqueIdentifier>{2c465c80-d9c6-4f23-a57a-aac149906b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Drawable">
+      <UniqueIdentifier>{6285dfc0-d3e2-45b0-828d-697f9c6905f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Drawable\GL">
+      <UniqueIdentifier>{ee924640-29c2-4c6e-851f-00d19e0d15b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Drawable">
+      <UniqueIdentifier>{0b2d05ce-49d2-4950-9811-143f58b68d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Drawable\GL">
+      <UniqueIdentifier>{285d14e2-9941-4189-9aa6-5eff8bd57450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,6 +119,15 @@
     </ClCompile>
     <ClCompile Include="VoxelMatrix.cpp">
       <Filter>Source Files\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandler.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixTerminal.cpp">
+      <Filter>Source Files\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawableVertexBuffer.cpp">
+      <Filter>Source Files\Graphics\Drawable\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +196,18 @@
     </ClInclude>
     <ClInclude Include="GL.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandler.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixTerminal.h">
+      <Filter>Header Files\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="IDrawable.h">
+      <Filter>Header Files\Graphics\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawableVertexBuffer.h">
+      <Filter>Header Files\Graphics\Drawable\GL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

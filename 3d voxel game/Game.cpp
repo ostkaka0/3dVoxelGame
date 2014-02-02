@@ -1,12 +1,15 @@
 #include "IRenderer.h"
 #include "Game.h"
 #include "State.h"
+#include "EventHandler.h"
 
 Game::~Game()
 {
+#ifdef CLIENT
 	if (window)
 		glfwDestroyWindow(window);
     glfwTerminate();
+#endif
 }
 
 Game *&Game::getGame()
@@ -15,37 +18,42 @@ Game *&Game::getGame()
 	return game;
 }
 
-#pragma region GL Events
+#pragma region Events
+
+void Game::Error(const char *source, const char *description)
+{
+	eventHandler->ErrorCallback(this, source, description);
+}
 #ifdef CLIENT
 #pragma region input Events
 void Game::MouseButtonCallback(int button, int action, int mods)
 {
-	//eventHandler->MouseButtonCallback(button, action, mods);
+	eventHandler->MouseButtonCallback(this, window, button, action, mods);
 }
 
 void Game::CursorPosCallback(int x, int y)
 {
-
+	eventHandler->CursorPosCallback(this, window, x, y);
 }
 
 void Game::CursorEnterCallback(int entered)
 {
-
+	eventHandler->CursorEnterCallback(this, window, entered);
 }
 
 void Game::ScrollCallback(int xOffset, int yOffset)
 {
-
+	eventHandler->ScrollCallback(this, window, xOffset, yOffset);
 }
 
 void Game::KeyCallback(int key, int scancode, int action, int mods)
 {
-
+	//eventHandler->KeyCallback(this, window, key, scancode, action, mods);
 }
 
 void Game::CharCallback(unsigned int character)
 {
-
+	eventHandler->CharCallback(this, window, character);
 }
 #pragma endregion
 #endif
@@ -53,14 +61,13 @@ void Game::CharCallback(unsigned int character)
 
 void Game::Start()
 {
+	eventHandler = new EventHandler();
 #ifdef CLIENT
 	if (!glfwInit())
 		Error("Game", "glfwInit failed!");
 
-	/*glfwSetErrorCallback([](int error, const char *description)->void
-	{
-		//game->Error(typeid(*this).name, description);
-	});*/
+	glfwSetErrorCallback([](int error, const char *description)
+		{ Game::getGame()->Error("GLFW", description); });
 
 	window = glfwCreateWindow(800, 600, "Voxel Engine", nullptr, nullptr);
 
@@ -70,12 +77,7 @@ void Game::Start()
 		exit(EXIT_FAILURE);
 	}
 
-	
-
 	glfwMakeContextCurrent(window);
-
-	//glfwSetErrorCallback([](int error, char *description)
-	//{static_cast<GameTest*>(Game::getGame())->Error("GameTest", description);});
 
 #pragma region callback events
 #pragma region input callbacks
@@ -157,12 +159,13 @@ void Game::Exit()
 		delete state;
 		state = nullptr;
 	}
-
+#ifdef CLIENT
 	if (renderer)
 	{
 		delete renderer;
 		renderer = nullptr;
 	}
+#endif
 }
 
 void Game::Restart()

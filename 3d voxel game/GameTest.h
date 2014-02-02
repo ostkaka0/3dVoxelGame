@@ -16,10 +16,4 @@ public:
 
 	virtual void Error(const char *source, const char *description);
 
-#pragma region GL Events
-#ifdef CLIENT
-	virtual void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-#endif
-#pragma endregion
-
 };
