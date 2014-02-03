@@ -43,8 +43,8 @@
     <LibraryPath>C:\libs\glfw-3.0.3\build\src\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\glfw-3.0.4.bin.WIN32\include;C:\glm;C:\glew-1.10.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\glew-1.10.0\lib\Release\Win32;C:\glfw-3.0.4.bin.WIN32\lib-msvc110;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\glfw-3.0.4.bin.WIN32\include;C:\glfw-3.0.4\include;C:\glm;C:\glew-1.10.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\glfw-3.0.4\lib;C:\glew-1.10.0\lib\Release\Win32;C:\glfw-3.0.4.bin.WIN32\lib-msvc110;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
