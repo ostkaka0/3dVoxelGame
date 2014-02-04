@@ -69,8 +69,13 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 			{
 				VoxelMatrix *matrix = reinterpret_cast<VoxelMatrix*>(mt);
 
+				/*GLuint VertexArrayID;
+				glGenVertexArrays(1, &VertexArrayID);
+				glBindVertexArray(VertexArrayID);*/
+
 				GLuint vertexbuffer;
 
+			
 				// Generate 1 buffer, put the resulting identifier in vertexbuffer
 				glGenBuffers(1, &vertexbuffer);
 
@@ -87,6 +92,8 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 					{
 						for (int z = 0; z < matrix->m_depth; z++)
 						{
+							if (x!=1 || y!= 0 || z != 0)
+								continue;
 							if (matrix->getVoxel(x, y, z) == 0)
 								continue;
 #pragma region cube
@@ -307,14 +314,20 @@ void OpenglRenderer::SetColor(Color color)
 
 #pragma endregion 
 
-void OpenglRenderer::Clear()
+void OpenglRenderer::Clear(GLFWwindow *window)
 {
+	float ratio;
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+	ratio = width / (float) height;
+	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_PROJECTION);
 }
 
 void OpenglRenderer::Render(GLFWwindow *window)
 {
-	float ratio;
+	/*float ratio;
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	ratio = width / (float) height;
@@ -333,7 +346,7 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	glVertex3f(0.6f, -0.4f, 0.f);
 	glColor3f(0.f, 0.f, 1.f);
 	glVertex3f(0.f, 0.6f, 0.f);
-	glEnd();
+	glEnd();*/
 	/////////
 	glfwSwapBuffers(window);
 	/////

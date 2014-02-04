@@ -29,7 +29,7 @@ public:
 	virtual void SetColor(Color color);
 #pragma endregion 
 
-	virtual void Clear();
+	virtual void Clear(GLFWwindow *window);
 	virtual void Render(GLFWwindow *window);
 };
 #endif

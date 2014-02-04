@@ -79,6 +79,15 @@ void Game::Start()
 
 	glfwMakeContextCurrent(window);
 
+	// Initialize GLEW
+	glewExperimental=true; // Needed in core profile
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		exit(EXIT_FAILURE);
+	}
+ 
+	//glfwSetWindowTitle( "Tutorial 01" );
+
 #pragma region callback events
 #pragma region input callbacks
 
@@ -134,6 +143,7 @@ void Game::Start()
 #endif
 
 	Initialize();
+	state->Load(this, eventHandler);
 
 	while (state
 #ifdef CLIENT
@@ -144,7 +154,7 @@ void Game::Start()
 		state->Update(this);
 
 #ifdef CLIENT
-		renderer->Clear();
+		renderer->Clear(window);
 		state->Draw(this, renderer);
 		Draw();
 		renderer->Render(window);

@@ -31,7 +31,7 @@ public:
 	virtual void SetColor(Color color)=0;
 #pragma endregion 
 
-	virtual void Clear()=0;
+	virtual void Clear(GLFWwindow *window)=0;
 	virtual void Render(GLFWwindow *window)=0;
 };
 #endif
