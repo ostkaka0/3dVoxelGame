@@ -13,6 +13,11 @@ OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 {
 	glViewport(0, 0, width, height);
 	glClearColor(0, 0, 255, 255);
+
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
+
+	glEnableVertexAttribArray(0);
 }
 
 OpenglRenderer::~OpenglRenderer()
@@ -21,6 +26,8 @@ OpenglRenderer::~OpenglRenderer()
 	{
 		DeleteMatrix(i.first, i.second);
 	}
+
+	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
 #pragma region Matrix initializing
@@ -269,7 +276,9 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 			}
 		}
 
-		glEnableVertexAttribArray(0);
+		std::cout << mt->m_vertexBuffer << mt->m_changed << std::endl;
+
+		//glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
 		glVertexAttribPointer(
 			0,				// attribute 0, must match the shader
@@ -283,7 +292,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 		//Draws the triangles
 		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
 
-		glDisableVertexAttribArray(0);
+		//glDisableVertexAttribArray(0);
 	}
 	else
 	{
@@ -317,6 +326,7 @@ void OpenglRenderer::SetColor(Color color)
 
 void OpenglRenderer::Clear(GLFWwindow *window)
 {
+
 	float ratio;
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);

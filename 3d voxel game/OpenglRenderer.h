@@ -9,6 +9,7 @@ class Game;
 
 class OpenglRenderer : public IRenderer
 {
+	GLuint VertexArrayID;
 public:
 	OpenglRenderer(Game *game, int width, int height);
 	~OpenglRenderer();

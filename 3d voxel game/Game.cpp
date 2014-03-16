@@ -66,16 +66,27 @@ void Game::Start()
 	if (!glfwInit())
 		Error("Game", "glfwInit failed!");
 
-	glfwSetErrorCallback([](int error, const char *description)
-		{ Game::getGame()->Error("GLFW", description); });
+	//glfwWindowHint(GLFW_SAMPLES, 4);
+	//glfwWindowHint(GLFW_VERSION_MINOR, 3);
+	//glfwWindowHint(GLFW_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_FSAA_SAMPLES, 4);
+	//glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	window = glfwCreateWindow(800, 600, "Voxel Engine", nullptr, nullptr);
 
 	if (!window)
 	{
 		glfwTerminate();
+		std::cin.get();
 		exit(EXIT_FAILURE);
 	}
+
+	glfwSetErrorCallback([](int error, const char *description)
+		{ Game::getGame()->Error("GLFW", description); });
+
+
 
 	glfwMakeContextCurrent(window);
 
@@ -83,8 +94,11 @@ void Game::Start()
 	glewExperimental=true; // Needed in core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
+		std::cin.get();
 		exit(EXIT_FAILURE);
 	}
+
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
  
 	//glfwSetWindowTitle( "Tutorial 01" );
 

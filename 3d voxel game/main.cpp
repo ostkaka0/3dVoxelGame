@@ -1,10 +1,12 @@
 #include "GameTest.h"
+#include <iostream>
 
 int main()
 {
 	Game *&game = Game::getGame();
 	game = new GameTest();
 	game->Start();
+	std::cin.get();
 	return 0;
 }
 

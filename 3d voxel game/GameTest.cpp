@@ -4,6 +4,9 @@
 #include "StateTest.h"
 #include "OpenglRenderer.h"
 
+
+#include <Windows.h>
+
 GameTest::GameTest()
 {
 
@@ -25,6 +28,7 @@ void GameTest::Initialize()
 void GameTest::Update()
 {
 	state->Update(this);
+	Sleep(3000);
 }
 
 void GameTest::Draw()
