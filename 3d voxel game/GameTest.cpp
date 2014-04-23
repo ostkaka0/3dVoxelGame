@@ -22,6 +22,7 @@ void GameTest::Initialize()
 	state = new StateTest();
 #ifdef CLIENT
 	renderer = new OpenglRenderer(this, width, height);
+	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl");
 #endif
 }
 

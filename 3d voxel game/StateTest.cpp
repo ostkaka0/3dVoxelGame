@@ -17,12 +17,12 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 
 void StateTest::Draw(Game *game, IRenderer *renderer)
 {
-	glMatrixMode(GL_PROJECTION);
+	/*glMatrixMode(GL_PROJECTION);
 	renderer->PushMatrix();
 	renderer->Translate(0,0, -10);
 	renderer->RenderMatrix(voxels);
 	
-	renderer->PopMatrix();
+	renderer->PopMatrix();*/
 }
 
 void StateTest::Update(Game *game)
