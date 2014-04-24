@@ -1,5 +1,6 @@
 class IRenderer;
 
+//IRenderable is probably a better name
 class IDrawable
 {
 public:

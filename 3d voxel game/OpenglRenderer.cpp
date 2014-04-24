@@ -146,6 +146,7 @@ void OpenglRenderer::DeleteMatrix(GLuint matrixPtr, GLuint size)
 
 void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 {
+	
 	if (MatrixTerminal *mt = dynamic_cast<MatrixTerminal*>(matrix))
 	{
 		if (mt->m_changed)

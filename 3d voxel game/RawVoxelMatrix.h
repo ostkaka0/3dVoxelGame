@@ -5,7 +5,7 @@ template<class VOXEL> class RawMatrix
 {
 	int width;
 	int height;
-	int height;
+	int depth;
 	VOXEL *voxels;
 };
 
