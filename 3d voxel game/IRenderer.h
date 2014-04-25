@@ -5,6 +5,7 @@
 
 #include "GL.h"
 #include "Color.h"
+#include <glm\glm.hpp>
 
 class IMatrix;
 

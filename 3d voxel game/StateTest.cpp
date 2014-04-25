@@ -1,9 +1,12 @@
 #include "StateTest.h"
 
+#include "GL.h"
+#include <glm\glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Game.h"
 #include "IRenderer.h"
 #include "VoxelMatrix.h"
-#include "GL.h"
 
 void StateTest::Load(Game *game, EventHandler *eventHandler)
 {
