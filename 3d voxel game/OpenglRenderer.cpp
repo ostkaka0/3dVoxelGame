@@ -354,7 +354,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 			}
 		}
 
-		std::cout << mt->m_vertexBuffer << mt->m_changed << std::endl;
+		//std::cout << mt->m_vertexBuffer << mt->m_changed << std::endl;
 
 		//glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		error = glGetError();
@@ -436,11 +436,11 @@ void OpenglRenderer::Render(GLFWwindow *window)
 
 	glBegin(GL_TRIANGLES);
 	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(-0.6f, -0.4f, 0.f);
-	glColor3f(0.f, 1.f, 0.f);
-	glVertex3f(0.6f, -0.4f, 0.f);
-	glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.6f, 0.f);
+	glVertex3f(-0.06f, -0.04f, 0.f);
+	glColor3f(0.f, 0.1f, 0.f);
+	glVertex3f(0.06f, -0.04f, 0.f);
+	glColor3f(0.f, 0.f, 0.1f);
+	glVertex3f(0.f, 0.06f, 0.f);
 	glEnd();
 
 	/*float ratio;

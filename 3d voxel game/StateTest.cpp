@@ -35,6 +35,15 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	voxels->setVoxel(5, 4, 3, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(3, 3, 5, reinterpret_cast<IVoxel*>(1));
 
+	voxels->setVoxel(0, 0, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(0, 0, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(0, 15, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(0, 15, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 0, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 0, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 15, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 15, 15, reinterpret_cast<IVoxel*>(1));
+
 
 }
 
@@ -52,5 +61,13 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 
 void StateTest::Update(Game *game)
 {
-
+		View       = glm::lookAt(
+								glm::vec3(5*cos(glfwGetTime()),3,5*sin(glfwGetTime())), // Camera is at (4,3,3), in World Space << (now rotating)
+								glm::vec3(0,0,0), // and looks at the origin
+								glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+						   );
+	// Model matrix : an identity matrix (model will be at the origin)
+	Model      = glm::mat4(1.0f);
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
 }
