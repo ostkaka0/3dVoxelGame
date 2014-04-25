@@ -1,5 +1,5 @@
 #include "IDrawable.h"
-#include "GL.h"
+#include <gl\glew.h>
 
 class DrawableVertexBuffer : public IDrawable
 {
