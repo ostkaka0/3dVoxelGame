@@ -32,6 +32,15 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	voxels->setVoxel(5, 4, 3, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(3, 3, 5, reinterpret_cast<IVoxel*>(1));
 
+	voxels->setVoxel(0, 0, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(0, 0, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(0, 15, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(0, 15, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 0, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 0, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 15, 0, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 15, 15, reinterpret_cast<IVoxel*>(1));
+
 
 }
 
