@@ -5,7 +5,6 @@
 
 class GameTest : public Game
 {
-
 public:
 	GameTest();
 	~GameTest();

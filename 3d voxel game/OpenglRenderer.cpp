@@ -21,6 +21,9 @@ OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 	glBindVertexArray(VertexArrayID);
 
 	glEnableVertexAttribArray(0);
+
+
+
 }
 
 OpenglRenderer::~OpenglRenderer()
@@ -107,6 +110,9 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
  
 	glUseProgram(ProgramID);
 
+	// Get a handle for our "MVP" uniform
+	MatrixID = glGetUniformLocation(ProgramID, "MVP");
+
     return ProgramID;
 }
 
@@ -144,7 +150,7 @@ void OpenglRenderer::DeleteMatrix(GLuint matrixPtr, GLuint size)
 	glDeleteBuffers(size, &matrixPtr);
 }
 
-void OpenglRenderer::RenderMatrix(IMatrix *matrix)
+void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 {
 	
 	if (MatrixTerminal *mt = dynamic_cast<MatrixTerminal*>(matrix))
@@ -183,7 +189,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 						{
 							if (x!=1 || y!= 0 || z != 0)
 								continue;
-							if (matrix->getVoxel(x, y, z) == 0)
+							if (matrix->getVoxel(x, y, z) == 0 && false)
 								continue;
 #pragma region cube
 							g_vertex_buffer_data.push_back(x-0.5F);
@@ -359,6 +365,8 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 
 		std::cout << mt->m_vertexBuffer << mt->m_changed << std::endl;
 
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+
 		//glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
 		glVertexAttribPointer(
@@ -377,7 +385,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix)
 	}
 	else
 	{
-		matrix->Render(this);
+		matrix->Render(this, MVP);
 	}
 }
 

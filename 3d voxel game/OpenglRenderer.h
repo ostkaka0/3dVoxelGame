@@ -9,6 +9,7 @@ class Game;
 
 class OpenglRenderer : public IRenderer
 {
+	GLuint MatrixID;
 	GLuint VertexArrayID;
 public:
 	OpenglRenderer(Game *game, int width, int height);
@@ -23,7 +24,7 @@ public:
 
 	//virtual void PushMatrix(int matrixPtr);
 	virtual void DeleteMatrix(GLuint matrixPtr, GLuint size);
-	virtual void RenderMatrix(IMatrix* matrix);
+	virtual void RenderMatrix(IMatrix* matrix, glm::mat4 MVP) override;
 #pragma endregion
 #pragma region Matrix modifying
 	virtual void Translate(float x, float y, float z);

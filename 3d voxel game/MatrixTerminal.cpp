@@ -18,7 +18,7 @@ MatrixTerminal::~MatrixTerminal()
 	}
 }
 
-void MatrixTerminal::Render(IRenderer *renderer)
+void MatrixTerminal::Render(IRenderer *renderer, glm::mat4 MVP)
 {
 	std::cout << "Unhandeld drawable terminal: " << typeid(*this).name() << std::endl;
 }

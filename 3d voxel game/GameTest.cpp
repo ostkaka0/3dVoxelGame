@@ -7,9 +7,10 @@
 
 #include <Windows.h>
 
+#include "GL.h"
+
 GameTest::GameTest()
 {
-
 }
 
 GameTest::~GameTest()

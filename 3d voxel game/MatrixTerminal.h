@@ -16,5 +16,5 @@ public:
 
 	MatrixTerminal();
 	~MatrixTerminal();
-	virtual void Render(IRenderer *renderer);
+	virtual void Render(IRenderer *renderer, glm::mat4 MVP);
 };
