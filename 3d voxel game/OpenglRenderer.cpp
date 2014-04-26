@@ -180,158 +180,85 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 					{
 						for (int z = 0; z < matrix->m_depth; z++)
 						{
-							if (x!=0 || y!= 0 || z != 0)
+							//if (x!=0 || y!= 0 || z != 0)
+								//continue;
+							if (matrix->getVoxel(x, y, z) == 0)
 								continue;
-							if (matrix->getVoxel(x, y, z) == 0 && false)
-								continue;
-#pragma region triangle
-							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y-0.0F, z-0.0F));
-							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.0F, z-0.0F));
-							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.5F, z-0.0F));
+#pragma region cube
+							///////////////////////////////////////////////////////////////
+							//// skrev denna kod helt manuellt efter att jag bytte till Vertex-object
+							///////////////////////////////////////////////////////////////
 
-							/*g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
+
+							//mittentriangel för att se ungefär var (0, 0, 0) är
+							/*g_vertex_buffer_data.push_back(Vertex(x-0.1F, y-0.1F, z-0.0F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.1F, y-0.0F, z-0.0F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.1F, z-0.0F));*/
+
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
+
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
+
+
 							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
-							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));*/
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z+0.5F));
 
-
-							g_vertex_buffer_data.push_back(Vertex(x-0.1F, y-0.1F, z+0.0F));
-							g_vertex_buffer_data.push_back(Vertex(x+0.0F, y-0.5F, z+0.0F));
-							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.0F, z+0.0F));
-
-							/*g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-							///
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z+0.5F));
 
 
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
 
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-							///
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
 
-							////////////
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-							///
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
 
 
 
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
+							
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
 
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-							///
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
 
 
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));
 
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-							///
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x+0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);*/
 
 #pragma endregion
 						}
 					}
 				}
 
-				error = glGetError();
 				// Give our vertices to OpenGL.
 				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
 				error = glGetError();
@@ -344,16 +271,10 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 			}
 		}
 
-		//std::cout << mt->m_vertexBuffer << mt->m_changed << std::endl;
-
-		//glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		error = glGetError();
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glEnableVertexAttribArray(0);
-		error = glGetError();
 
-		
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
-		error = glGetError();
 		glVertexAttribPointer(
 			0,				// attribute 0, must match the shader
 			3,				// number of components per generic vertex attribute
@@ -363,13 +284,8 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 			(void*)0		// array buffer offset
 			);
 
-		error = glGetError();
-		//Draws the triangles
 		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
-
-		error = glGetError();
 		glDisableVertexAttribArray(0);
-		error = glGetError();
 	}
 	else
 	{
@@ -404,10 +320,10 @@ void OpenglRenderer::SetColor(Color color)
 void OpenglRenderer::Clear(GLFWwindow *window)
 {
 
-	float ratio;
+	//float ratio;
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
-	ratio = width / (float) height;
+	//ratio = width / (float) height;
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
@@ -421,8 +337,19 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	//glLoadIdentity();
 
 
-	//glRotatef((float) glfwGetTime() * 500.f, 0.f, 1.f, 0.f);
+	//glRotatef((float) glfwGetTime() * 50.f, 0.f, 1.f, 1.f);
 	//glTranslatef(0.f, 0.f, 1.125f);
+	/*glBegin(GL_TRIANGLES);
+	glColor3f(1.f, 0.f, 0.f);
+	//glVertex3f(-0.6f, -0.4f, 0.f);
+	glColor3f(0.f, 1.f, 0.f);
+	//glVertex3f(0.6f, -0.4f, 0.f);
+	glColor3f(0.f, 0.f, 1.f);
+	//glVertex3f(0.f, 0.6f, 0.f);
+	glEnd();
+
+	glRotatef((float) glfwGetTime() * 500.f, 0.f, 1.f, 0.f);
+	glTranslatef(0.f, 0.f, 1.125f);*/
 
 	/*glBegin(GL_TRIANGLES);
 	glColor3f(1.f, 0.f, 0.f);
@@ -432,19 +359,23 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	glColor3f(0.f, 0.f, 0.1f);
 	glVertex3f(0.f, 0.06f, 0.f);
 	glEnd();*/
-
-	/*float ratio;
+	/*	GLfloat error;
+		error = glGetError();
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	error = glGetError();
+	float ratio;
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	ratio = width / (float) height;
-	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+	/*glViewport(0, 0, width, height);*/
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//glMatrixMode(GL_PROJECTION);
+	/*glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+	float angle = (float) glfwGetTime() * 50.f;
+	glRotatef(angle, 0.f, 0.f, +1.f);
+	error = glGetError();
+
 	glBegin(GL_TRIANGLES);
 	glColor3f(1.f, 0.f, 0.f);
 	glVertex3f(-0.6f, -0.4f, 0.f);
@@ -452,7 +383,8 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	glVertex3f(0.6f, -0.4f, 0.f);
 	glColor3f(0.f, 0.f, 1.f);
 	glVertex3f(0.f, 0.6f, 0.f);
-	glEnd();*/
+	glEnd();
+	error = glGetError();*/
 	/////////
 	glfwSwapBuffers(window);
 	/////
