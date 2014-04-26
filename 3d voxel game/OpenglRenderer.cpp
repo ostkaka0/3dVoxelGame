@@ -105,10 +105,10 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
 
-	glUseProgram(ProgramID);
-
 	// Get a handle for our "MVP" uniform
 	MatrixID = glGetUniformLocation(ProgramID, "MVP");
+
+	glUseProgram(ProgramID);
 
 	return ProgramID;
 }
