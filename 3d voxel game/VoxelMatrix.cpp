@@ -6,6 +6,16 @@ VoxelMatrix::VoxelMatrix(const int width, const int height, const int depth)
 	, m_depth(depth)
 	, m_voxels(new IVoxel*[width*height*depth])
 {
+		for (int z = 0; z < 16; z++)
+	{
+		for (int y = 0; y < 16; y++)
+		{
+			for (int x = 0; x < 16; x++)
+			{
+				setVoxel(x, y, z, nullptr);
+			}
+		}
+	}
 }
 
 VoxelMatrix::VoxelMatrix(const int width, const int height, const int depth, IVoxel **voxels)
