@@ -11,6 +11,7 @@
 #include "Game.h"
 #include "MatrixTerminal.h"
 #include "VoxelMatrix.h"
+#include "Vertex.h"
 
 OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 {
@@ -168,8 +169,9 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 				glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 				error = glGetError();
 
-				std::vector<GLfloat> g_vertex_buffer_data;
-				g_vertex_buffer_data.reserve(matrix->m_width*matrix->m_height*matrix->m_depth*9*6);
+				std::vector<Vertex> g_vertex_buffer_data;
+				//g_vertex_buffer_data.reserve(3);
+				//g_vertex_buffer_data.reserve(matrix->m_width*matrix->m_height*matrix->m_depth*9*6);
 
 
 				for (int x = 0; x < matrix->m_width; x++)
@@ -178,38 +180,25 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 					{
 						for (int z = 0; z < matrix->m_depth; z++)
 						{
-							if (x!=1 || y!= 0 || z != 0)
+							if (x!=0 || y!= 0 || z != 0)
 								continue;
 							if (matrix->getVoxel(x, y, z) == 0 && false)
 								continue;
-#pragma region cube
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
+#pragma region triangle
+							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y-0.0F, z-0.0F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.0F, z-0.0F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.5F, z-0.0F));
 
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-							///
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y-0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
-
-							g_vertex_buffer_data.push_back(x-0.5F);
-							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z-0.5F);
+							/*g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));*/
 
 
+							g_vertex_buffer_data.push_back(Vertex(x-0.1F, y-0.1F, z+0.0F));
+							g_vertex_buffer_data.push_back(Vertex(x+0.0F, y-0.5F, z+0.0F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.0F, z+0.0F));
 
-							g_vertex_buffer_data.push_back(x-0.5F);
+							/*g_vertex_buffer_data.push_back(x-0.5F);
 							g_vertex_buffer_data.push_back(y-0.5F);
 							g_vertex_buffer_data.push_back(z-0.5F);
 
@@ -335,7 +324,8 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 							g_vertex_buffer_data.push_back(x-0.5F);
 							g_vertex_buffer_data.push_back(y+0.5F);
-							g_vertex_buffer_data.push_back(z+0.5F);
+							g_vertex_buffer_data.push_back(z+0.5F);*/
+
 #pragma endregion
 						}
 					}
@@ -343,7 +333,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 				error = glGetError();
 				// Give our vertices to OpenGL.
-				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
 				error = glGetError();
 				matrix->m_vertexBuffer = vertexbuffer;
 				matrix->m_size = g_vertex_buffer_data.size();
@@ -360,22 +350,22 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 		error = glGetError();
 		glEnableVertexAttribArray(0);
 		error = glGetError();
-		
+
 		
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
 		error = glGetError();
 		glVertexAttribPointer(
 			0,				// attribute 0, must match the shader
-			mt->m_size,		// size
-			GL_FLOAT,		// type
+			3,				// number of components per generic vertex attribute
+			GL_FLOAT,		// data type of each x/y/z in Vertex                                   (mer informella kommentarer som gör att man förstår)
 			GL_FALSE,		// normalized?
-			0,				// stride
+			0,				// byte offset between each Vertex
 			(void*)0		// array buffer offset
 			);
 
 		error = glGetError();
 		//Draws the triangles
-		//glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
 
 		error = glGetError();
 		glDisableVertexAttribArray(0);
@@ -431,17 +421,17 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	//glLoadIdentity();
 
 
-	glRotatef((float) glfwGetTime() * 500.f, 0.f, 1.f, 0.f);
+	//glRotatef((float) glfwGetTime() * 500.f, 0.f, 1.f, 0.f);
 	//glTranslatef(0.f, 0.f, 1.125f);
 
-	glBegin(GL_TRIANGLES);
+	/*glBegin(GL_TRIANGLES);
 	glColor3f(1.f, 0.f, 0.f);
 	glVertex3f(-0.06f, -0.04f, 0.f);
 	glColor3f(0.f, 0.1f, 0.f);
 	glVertex3f(0.06f, -0.04f, 0.f);
 	glColor3f(0.f, 0.f, 0.1f);
 	glVertex3f(0.f, 0.06f, 0.f);
-	glEnd();
+	glEnd();*/
 
 	/*float ratio;
 	int width, height;

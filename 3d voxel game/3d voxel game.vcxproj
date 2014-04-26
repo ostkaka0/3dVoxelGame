@@ -94,6 +94,7 @@
     <ClInclude Include="GL.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="MatrixTerminal.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VoxelRegister.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Color.h" />
