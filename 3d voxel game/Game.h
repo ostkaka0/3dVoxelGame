@@ -29,6 +29,7 @@ public:
 	virtual void Update()=0;
 #ifdef CLIENT
 	virtual void Draw()=0;
+	GLFWwindow *getWindow() { return this->window; };
 #endif
 	virtual void Error(const char *source, const char *description);
 
