@@ -18,6 +18,14 @@ class StateTest : public State
 	// Our ModelViewProjection : multiplication of our 3 matrices
 	glm::mat4 MVP; // Remember, matrix multiplication is the other way around
 
+	glm::vec3 position;
+	glm::vec3 rotation;
+	float horizontalAngle;
+	float verticalAngle;
+	float mouseSpeed;
+	float moveSpeed;
+	float initialFoV;
+
 	VoxelMatrix *voxels;
 public:
 	virtual void Load(Game *game, EventHandler *eventHandler);

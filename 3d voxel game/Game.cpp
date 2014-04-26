@@ -7,7 +7,7 @@
 Game::~Game()
 {
 #ifdef CLIENT
-	if (window)
+	if (!window)
 		glfwDestroyWindow(window);
     glfwTerminate();
 #endif
@@ -162,7 +162,7 @@ void Game::Start()
 
 	while (state
 #ifdef CLIENT
-		&& !glfwWindowShouldClose(window)
+		&& !glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS
 #endif
 		)
 	{
@@ -175,6 +175,7 @@ void Game::Start()
 		renderer->Render(window);
 #endif
 	}
+	this->Exit();
 }
 
 void Game::Exit()
@@ -190,6 +191,7 @@ void Game::Exit()
 		delete renderer;
 		renderer = nullptr;
 	}
+	glfwTerminate();
 #endif
 }
 
