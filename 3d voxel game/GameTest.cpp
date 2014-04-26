@@ -24,13 +24,14 @@ void GameTest::Initialize()
 #ifdef CLIENT
 	renderer = new OpenglRenderer(this, width, height);
 	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl");
+	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 #endif
 }
 
 void GameTest::Update()
 {
 	state->Update(this);
-	Sleep(3000);
+	Sleep(300);
 }
 
 void GameTest::Draw()

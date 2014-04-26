@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "State.h"
 #include "EventHandler.h"
+#include <Windows.h>
 
 Game::~Game()
 {
