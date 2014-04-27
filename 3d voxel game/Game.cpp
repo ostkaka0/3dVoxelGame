@@ -3,6 +3,8 @@
 #include "State.h"
 #include "EventHandler.h"
 #include <Windows.h>
+#include <cstdlib>
+#include <ctime>
 
 Game::~Game()
 {
@@ -62,6 +64,7 @@ void Game::CharCallback(unsigned int character)
 
 void Game::Start()
 {
+	srand (time(NULL));
 	eventHandler = new EventHandler();
 #ifdef CLIENT
 	if (!glfwInit())

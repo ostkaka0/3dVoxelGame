@@ -1,4 +1,4 @@
-#ifdef CLIENT
+ï»¿#ifdef CLIENT
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
@@ -162,12 +162,13 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 			{
 				VoxelMatrix *matrix = reinterpret_cast<VoxelMatrix*>(mt);
 
-				error = glGetError();
-
 				GLuint vertexbuffer;
 				glGenBuffers(1, &vertexbuffer);
 				glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-				error = glGetError();
+
+				//GLuint colorVertexbuffer;
+				//glGenBuffers(1, &colorVertexbuffer);
+				//glBindBuffer(GL_ARRAY_BUFFER, colorVertexbuffer);
 
 				std::vector<Vertex> g_vertex_buffer_data;
 				//g_vertex_buffer_data.reserve(3);
@@ -181,7 +182,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 						for (int z = 0; z < matrix->m_depth; z++)
 						{
 							//if (x!=0 || y!= 0 || z != 0)
-								//continue;
+							//continue;
 							if (matrix->getVoxel(x, y, z) == 0)
 								continue;
 #pragma region cube
@@ -190,7 +191,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 							///////////////////////////////////////////////////////////////
 
 
-							//mittentriangel för att se ungefär var (0, 0, 0) är
+							//mittentriangel fÃ¶r att se ungefÃ¤r var (0, 0, 0) Ã¤r
 							/*g_vertex_buffer_data.push_back(Vertex(x-0.1F, y-0.1F, z-0.0F));
 							g_vertex_buffer_data.push_back(Vertex(x+0.1F, y-0.0F, z-0.0F));
 							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.1F, z-0.0F));*/
@@ -235,7 +236,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 
 
-							
+
 							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z+0.5F));
@@ -259,10 +260,15 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 					}
 				}
 
+				for(Vertex v : g_vertex_buffer_data)
+				{
+					v.SetColor(rand() % 256, rand() % 256, rand() % 256, rand() % 256);
+				}
+
 				// Give our vertices to OpenGL.
 				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
-				error = glGetError();
 				matrix->m_vertexBuffer = vertexbuffer;
+				//matrix->m_colorVertexbuffer = colorVertexbuffer;
 				matrix->m_size = g_vertex_buffer_data.size();
 				matrix->m_changed = false;
 
@@ -272,20 +278,21 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 		}
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		glEnableVertexAttribArray(0);
 
+		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
-		glVertexAttribPointer(
-			0,				// attribute 0, must match the shader
-			3,				// number of components per generic vertex attribute
-			GL_FLOAT,		// data type of each x/y/z in Vertex                                   (mer informella kommentarer som gör att man förstår)
-			GL_FALSE,		// normalized?
-			0,				// byte offset between each Vertex
-			(void*)0		// array buffer offset
-			);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));
+
+		//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
+		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
+
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
 
 		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+
 		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
 	}
 	else
 	{
@@ -321,13 +328,13 @@ void OpenglRenderer::Clear(GLFWwindow *window)
 {
 
 	//float ratio;
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
+	//int width, height;
+	//glfwGetFramebufferSize(window, &width, &height);
 	//ratio = width / (float) height;
-	glViewport(0, 0, width, height);
+	//glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
 
 }
 
@@ -360,7 +367,7 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	glVertex3f(0.f, 0.06f, 0.f);
 	glEnd();*/
 	/*	GLfloat error;
-		error = glGetError();
+	error = glGetError();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	error = glGetError();

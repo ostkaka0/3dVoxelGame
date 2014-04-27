@@ -5,6 +5,7 @@
 class MatrixTerminal : public IMatrix
 {
 public:
+	GLuint m_colorVertexbuffer;
 	GLuint m_vertexBuffer;
 	GLuint m_size;
 	bool m_changed;
