@@ -129,6 +129,9 @@
     <ClCompile Include="DrawableVertexBuffer.cpp">
       <Filter>Source Files\Graphics\Drawable\GL</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Graphics\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files\Graphics\Drawable\GL</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
+      <Filter>Header Files\Graphics\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
       <Filter>Header Files\Graphics\Renderer</Filter>
     </ClInclude>
   </ItemGroup>

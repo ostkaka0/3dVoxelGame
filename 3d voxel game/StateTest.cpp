@@ -107,7 +107,7 @@ void StateTest::Update(Game *game)
 
 	float tempMoveSpeed = moveSpeed;
 	if(glfwGetKey(game->getWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)
-		tempMoveSpeed = tempMoveSpeed*4;
+		tempMoveSpeed = tempMoveSpeed*16;
 	// Move forward
 	if (glfwGetKey(game->getWindow(), GLFW_KEY_W ) == GLFW_PRESS){
 		position += direction * deltaTime * tempMoveSpeed;

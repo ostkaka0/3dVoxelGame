@@ -83,6 +83,7 @@
     <ClCompile Include="MatrixTerminal.cpp" />
     <ClCompile Include="OpenglRenderer.cpp" />
     <ClCompile Include="FreeColor.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Solid.cpp" />
     <ClCompile Include="StateTest.cpp" />
     <ClCompile Include="VoxelMatrix.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="GL.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="MatrixTerminal.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VoxelRegister.h" />
     <ClInclude Include="Chunk.h" />
