@@ -21,6 +21,8 @@ OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 	glEnableVertexAttribArray(0);
+
+
 }
 
 OpenglRenderer::~OpenglRenderer()
@@ -171,6 +173,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 				//glBindBuffer(GL_ARRAY_BUFFER, colorVertexbuffer);
 
 				std::vector<Vertex> g_vertex_buffer_data;
+				g_vertex_buffer_data.reserve(3*2*6 * matrix->m_width*matrix->m_height*matrix->m_depth); // för att snabba på!
 				//g_vertex_buffer_data.reserve(3);
 				//g_vertex_buffer_data.reserve(matrix->m_width*matrix->m_height*matrix->m_depth*9*6);
 
@@ -260,10 +263,15 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 					}
 				}
 
-				for(Vertex v : g_vertex_buffer_data)
+				for(Vertex &v : g_vertex_buffer_data)
 				{
 					//v.SetColor(rand() % 256, rand() % 256, rand() % 256, rand() % 256);
-					v.SetColor(0.5f, 0.0f, 0.0f, 1.0f);
+					GLfloat r,g,b;
+					r = (float)(rand()%256)/256.f;
+					g = (float)(rand()%256)/256.f;
+					b = (float)(rand()%256)/256.f;
+
+					v.SetColor(r, g, b, 1.0f);
 				}
 
 				// Give our vertices to OpenGL.
@@ -281,15 +289,15 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
 
 		//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
 		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
 
 		//glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
 
 		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
 
