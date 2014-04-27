@@ -15,7 +15,7 @@ public:
 	OpenglRenderer(Game *game, int width, int height);
 	~OpenglRenderer();
 
-	virtual GLuint LoadShaders(const char *vertexFilePath, const char *fragmentFilePath);
+	virtual GLuint LoadShaders(const char *vertexFilePath, const char *fragmentFilePath, const char *geometryFilePath);
 #pragma region Matrix initializing
 #pragma endregion
 #pragma region Matrix rendering

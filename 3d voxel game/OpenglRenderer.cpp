@@ -35,10 +35,11 @@ OpenglRenderer::~OpenglRenderer()
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
-GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragmentFilePath)
+GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragmentFilePath, const char *geometryFilePath)
 {
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint GeometryShaderID = glCreateShader(GL_GEOMETRY_SHADER);
 
 	// Read the Vertex Shader code from the file
 	std::string VertexShaderCode;
@@ -60,6 +61,17 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 			FragmentShaderCode += "\n" + Line;
 		FragmentShaderStream.close();
 	}
+
+	// Read the Geometry Shader code from the file
+	std::string GeometryShaderCode;
+	std::ifstream GeometryShaderStream(geometryFilePath, std::ios::in);
+	if(GeometryShaderStream.is_open()){
+		std::string Line = "";
+		while(getline(GeometryShaderStream, Line))
+			GeometryShaderCode += "\n" + Line;
+		GeometryShaderStream.close();
+	}
+
 
 	GLint Result = GL_FALSE;
 	int InfoLogLength;
@@ -90,11 +102,25 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 	glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
 	fprintf(stdout, "%s\n", &FragmentShaderErrorMessage[0]);
 
+	// Compile Geometry Shader
+	printf("Compiling shader : %s\n", geometryFilePath);
+	char const * GeometrySourcePointer = GeometryShaderCode.c_str();
+	glShaderSource(GeometryShaderID, 1, &GeometrySourcePointer , NULL);
+	glCompileShader(GeometryShaderID);
+
+	// Check Geometry Shader
+	glGetShaderiv(GeometryShaderID, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(GeometryShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	std::vector<char> GeometryShaderErrorMessage(InfoLogLength);
+	glGetShaderInfoLog(GeometryShaderID, InfoLogLength, NULL, &GeometryShaderErrorMessage[0]);
+	fprintf(stdout, "%s\n", &GeometryShaderErrorMessage[0]);
+
 	// Link the program
 	fprintf(stdout, "Linking program\n");
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
+	glAttachShader(ProgramID, GeometryShaderID);
 	glLinkProgram(ProgramID);
 
 	// Check the program
@@ -106,6 +132,7 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
+	glDeleteShader(GeometryShaderID);
 
 	// Get a handle for our "MVP" uniform
 	MatrixID = glGetUniformLocation(ProgramID, "MVP");
@@ -199,7 +226,9 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 							g_vertex_buffer_data.push_back(Vertex(x+0.1F, y-0.0F, z-0.0F));
 							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.1F, z-0.0F));*/
 
-							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x, y, z));
+
+							/*g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y-0.5F, z-0.5F));
 
@@ -255,7 +284,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z+0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
-							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));*/
 
 
 #pragma endregion

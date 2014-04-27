@@ -23,8 +23,7 @@ void GameTest::Initialize()
 	state = new StateTest();
 #ifdef CLIENT
 	renderer = new OpenglRenderer(this, width, height);
-	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl");
-	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl");
+	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl", "geometryshader.glsl");
 	glEnable(GL_DEPTH_TEST);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glEnable( GL_BLEND );

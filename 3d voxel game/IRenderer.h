@@ -15,7 +15,7 @@ protected:
 	std::vector<std::pair<GLuint,GLuint>> vertexBuffers;
 
 public:
-	virtual GLuint LoadShaders(const char *vertexFilePath, const char *fragmentFilePath)=0;
+	virtual GLuint LoadShaders(const char *vertexFilePath, const char *fragmentFilePath, const char *geometryFilePath)=0;
 #pragma region Matrix initializing
 #pragma endregion
 #pragma region Matrix rendering
