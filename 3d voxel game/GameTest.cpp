@@ -24,6 +24,7 @@ void GameTest::Initialize()
 #ifdef CLIENT
 	renderer = new OpenglRenderer(this, width, height);
 	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl");
+	glEnable(GL_DEPTH_TEST);
 	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 #endif
 }

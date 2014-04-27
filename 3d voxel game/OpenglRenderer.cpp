@@ -262,7 +262,8 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 				for(Vertex v : g_vertex_buffer_data)
 				{
-					v.SetColor(rand() % 256, rand() % 256, rand() % 256, rand() % 256);
+					//v.SetColor(rand() % 256, rand() % 256, rand() % 256, rand() % 256);
+					v.SetColor(0.5f, 0.0f, 0.0f, 1.0f);
 				}
 
 				// Give our vertices to OpenGL.
@@ -280,14 +281,15 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
 
 		//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
 		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
 
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
+		//glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
 
 		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
 
