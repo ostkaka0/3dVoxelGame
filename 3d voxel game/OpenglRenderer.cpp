@@ -120,7 +120,7 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
-	glAttachShader(ProgramID, GeometryShaderID);
+	glAttachShader(ProgramID, GeometryShaderID); //<< bra >.<
 	glLinkProgram(ProgramID);
 
 	// Check the program
@@ -226,7 +226,12 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 							g_vertex_buffer_data.push_back(Vertex(x+0.1F, y-0.0F, z-0.0F));
 							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.1F, z-0.0F));*/
 
+							//////// << bra
 							g_vertex_buffer_data.push_back(Vertex(x, y, z));
+							g_vertex_buffer_data.push_back(Vertex(x, y, z));
+							g_vertex_buffer_data.push_back(Vertex(x, y, z));
+
+							///// << bra
 
 							/*g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z-0.5F));
