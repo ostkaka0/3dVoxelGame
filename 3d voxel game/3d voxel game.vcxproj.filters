@@ -40,9 +40,6 @@
     <Filter Include="Header Files\Graphics\Renderer">
       <UniqueIdentifier>{10553134-5362-42cd-abf0-8337c75a54bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Matrix">
-      <UniqueIdentifier>{4dd7dd56-d500-4417-9f27-7b32fb8a0d7c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graphics\OpenGl">
       <UniqueIdentifier>{68aa8cf6-3f49-419d-8aff-bdb24fc29147}</UniqueIdentifier>
     </Filter>
@@ -60,15 +57,6 @@
     </Filter>
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{1adfe07b-0915-43b4-81a0-140fffed8f3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Matrix">
-      <UniqueIdentifier>{52bc3bf3-9b66-4d7e-9d5a-c618315ce0fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Matrix\World">
-      <UniqueIdentifier>{f85361d0-654b-47a4-8403-c3a7cff67e06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Matrix\World">
-      <UniqueIdentifier>{9c2a3611-68c4-4392-9d12-97f5bccae68d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\State">
       <UniqueIdentifier>{82f565a8-a4c9-43d6-8061-ae39df6b3269}</UniqueIdentifier>
@@ -90,6 +78,21 @@
     </Filter>
     <Filter Include="Source Files\Graphics\Drawable\GL">
       <UniqueIdentifier>{285d14e2-9941-4189-9aa6-5eff8bd57450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderable">
+      <UniqueIdentifier>{4dd7dd56-d500-4417-9f27-7b32fb8a0d7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderable\World">
+      <UniqueIdentifier>{f85361d0-654b-47a4-8403-c3a7cff67e06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderable">
+      <UniqueIdentifier>{52bc3bf3-9b66-4d7e-9d5a-c618315ce0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderable\World">
+      <UniqueIdentifier>{9c2a3611-68c4-4392-9d12-97f5bccae68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderable\Entity">
+      <UniqueIdentifier>{bb3b80d2-e992-4ad5-8a13-0ca58bd2e7cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,19 +121,22 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="VoxelMatrix.cpp">
-      <Filter>Source Files\Matrix</Filter>
+      <Filter>Source Files\Renderable</Filter>
     </ClCompile>
     <ClCompile Include="EventHandler.cpp">
       <Filter>Source Files\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixTerminal.cpp">
-      <Filter>Source Files\Matrix</Filter>
     </ClCompile>
     <ClCompile Include="DrawableVertexBuffer.cpp">
       <Filter>Source Files\Graphics\Drawable\GL</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Graphics\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderableTerminal.cpp">
+      <Filter>Source Files\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,10 +159,10 @@
       <Filter>Header Files\Voxel</Filter>
     </ClInclude>
     <ClInclude Include="WorldMatrix.h">
-      <Filter>Header Files\Matrix\World</Filter>
+      <Filter>Header Files\Renderable\World</Filter>
     </ClInclude>
     <ClInclude Include="Chunk.h">
-      <Filter>Header Files\Matrix\World</Filter>
+      <Filter>Header Files\Renderable\World</Filter>
     </ClInclude>
     <ClInclude Include="RawVoxel.h">
       <Filter>Header Files\Graphics\Raw</Filter>
@@ -170,11 +176,8 @@
     <ClInclude Include="IRenderer.h">
       <Filter>Header Files\Graphics\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IMatrix.h">
-      <Filter>Header Files\Matrix</Filter>
-    </ClInclude>
     <ClInclude Include="VoxelMatrix.h">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Renderable</Filter>
     </ClInclude>
     <ClInclude Include="IVoxel.h">
       <Filter>Header Files\Voxel</Filter>
@@ -203,9 +206,6 @@
     <ClInclude Include="EventHandler.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="MatrixTerminal.h">
-      <Filter>Header Files\Matrix</Filter>
-    </ClInclude>
     <ClInclude Include="IDrawable.h">
       <Filter>Header Files\Graphics\Drawable</Filter>
     </ClInclude>
@@ -217,6 +217,24 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\Graphics\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>Header Files\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderableTerminal.h">
+      <Filter>Header Files\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="IEntity.h">
+      <Filter>Header Files\Renderable\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="IWorld.h">
+      <Filter>Header Files\Renderable\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\Renderable\World</Filter>
+    </ClInclude>
+    <ClInclude Include="deque2.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

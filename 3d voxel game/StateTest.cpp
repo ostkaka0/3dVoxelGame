@@ -55,21 +55,16 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	voxels->setVoxel(15, 15, 0, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(15, 15, 15, reinterpret_cast<IVoxel*>(1));
 
-	shader = new Shader("shader");
+	//shader = new Shader("shader");
 	
 	
 }
 
 void StateTest::Draw(Game *game, IRenderer *renderer)
 {
-	//glMatrixMode(GL_PROJECTION);
-	//renderer->PushMatrix();
-	//renderer->Scale(1, 1 , -1);
-	shader->Bind();
-	shader->Update(MVP);
-	//renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl", "geometryshader.glsl");
-	//renderer->Translate(0,0, 10);
-	//
+	//shader->Bind();
+	//shader->Update(MVP);
+
 	for (int x = -8; x < 8; x++)
 	{
 		for (int y = -8; y < 8; y++)
@@ -77,15 +72,12 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 			for (int z = -8; z < 8; z++)
 			{
 				glm::mat4 ModelMatrix2 = glm::mat4(1.0);
-				ModelMatrix2 = glm::translate(ModelMatrix2, glm::vec3((float)x*2.f, (float)y*4.f, (float)z*2.f));
+				ModelMatrix2 = glm::translate(ModelMatrix2, glm::vec3((float)x*16.f, (float)y*16.f, (float)z*16.f));
 				glm::mat4 MVP2 = Projection * View * ModelMatrix2;
 				renderer->RenderMatrix(voxels, MVP2);
 			}
 		}
 	}
-	//renderer->Scale(-1, -1, -1);
-	//renderer->Translate(0,0, -10);
-	//renderer->PopMatrix();
 }
 
 void StateTest::Update(Game *game)

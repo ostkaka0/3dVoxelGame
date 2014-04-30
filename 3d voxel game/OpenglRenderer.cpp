@@ -9,7 +9,7 @@
 
 #include "OpenglRenderer.h"
 #include "Game.h"
-#include "MatrixTerminal.h"
+#include "RenderableTerminal.h"
 #include "VoxelMatrix.h"
 #include "Vertex.h"
 
@@ -146,7 +146,7 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 
 #pragma endregion
 #pragma region Matrix rendering
-void OpenglRenderer::PushMatrix()
+/*void OpenglRenderer::PushMatrix()
 {
 
 }
@@ -176,11 +176,11 @@ void OpenglRenderer::DeleteMatrix(GLuint matrixPtr, GLuint size)
 	glDeleteBuffers(size, &matrixPtr);
 }
 
-void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
+void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 {
 	GLenum error;
 
-	if (MatrixTerminal *mt = dynamic_cast<MatrixTerminal*>(matrix))
+	if (RenderableTerminal *mt = dynamic_cast<RenderableTerminal*>(matrix))
 	{
 		if (mt->m_changed)
 		{
@@ -347,7 +347,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 #pragma endregion
 #pragma region Matrix modifying
-void OpenglRenderer::Translate(float x, float y, float z)
+/*void OpenglRenderer::Translate(float x, float y, float z)
 {
 	glTranslatef(x, y, z);
 }
@@ -365,7 +365,7 @@ void OpenglRenderer::Scale(float x, float y, float z)
 void OpenglRenderer::SetColor(Color color)
 {
 	glColor4b(color.red,color.green, color.blue, color.opacity);
-}
+}*/
 
 #pragma endregion 
 
@@ -380,7 +380,6 @@ void OpenglRenderer::Clear(GLFWwindow *window)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_PROJECTION);
 	//glLoadIdentity();
-
 }
 
 void OpenglRenderer::Render(GLFWwindow *window)

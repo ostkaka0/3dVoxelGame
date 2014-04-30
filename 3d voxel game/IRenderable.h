@@ -4,8 +4,9 @@
 
 class IRenderer;
 
-class IMatrix
+class IRenderable
 {
 public:
+	virtual ~IRenderable() {}
 	virtual void Render(IRenderer *renderer, glm::mat4 MVP)=0;
 };

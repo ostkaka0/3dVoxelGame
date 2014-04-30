@@ -1,9 +1,9 @@
 #pragma once
-#include "MatrixTerminal.h"
+#include "RenderableTerminal.h"
 
 class IVoxel;
 
-class VoxelMatrix : public MatrixTerminal
+class VoxelMatrix : public RenderableTerminal
 {
 public:
 	int m_width;

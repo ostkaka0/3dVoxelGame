@@ -80,21 +80,25 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameTest.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MatrixTerminal.cpp" />
+    <ClCompile Include="RenderableTerminal.cpp" />
     <ClCompile Include="OpenglRenderer.cpp" />
     <ClCompile Include="FreeColor.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Solid.cpp" />
     <ClCompile Include="StateTest.cpp" />
     <ClCompile Include="VoxelMatrix.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="deque2.h" />
     <ClInclude Include="DrawableVertexBuffer.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="GL.h" />
     <ClInclude Include="IDrawable.h" />
-    <ClInclude Include="MatrixTerminal.h" />
+    <ClInclude Include="IEntity.h" />
+    <ClInclude Include="IWorld.h" />
+    <ClInclude Include="RenderableTerminal.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VoxelRegister.h" />
@@ -102,7 +106,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameTest.h" />
-    <ClInclude Include="IMatrix.h" />
+    <ClInclude Include="IRenderable.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="GLUtilty.h" />
@@ -116,6 +120,7 @@
     <ClInclude Include="Solid.h" />
     <ClInclude Include="StateTest.h" />
     <ClInclude Include="VoxelMatrix.h" />
+    <ClInclude Include="World.h" />
     <ClInclude Include="WorldMatrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

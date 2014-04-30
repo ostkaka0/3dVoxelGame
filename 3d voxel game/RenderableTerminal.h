@@ -1,8 +1,8 @@
 #pragma once
-#include "IMatrix.h"
+#include "IRenderable.h"
 #include "IRenderer.h"
 
-class MatrixTerminal : public IMatrix
+class RenderableTerminal : public IRenderable
 {
 public:
 	GLuint m_colorVertexbuffer;
@@ -11,11 +11,11 @@ public:
 	bool m_changed;
 	IRenderer *renderer;
 
-	//friend void IRenderer::RenderMatrix(IMatrix *matrix);
+	//friend void IRenderer::RenderMatrix(IRenderable *matrix);
 //public:
 	//friend class IRenderer;
 
-	MatrixTerminal();
-	~MatrixTerminal();
+	RenderableTerminal();
+	virtual ~RenderableTerminal() override;
 	virtual void Render(IRenderer *renderer, glm::mat4 MVP);
 };

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <typeinfo>
-#include "MatrixTerminal.h"
+#include "RenderableTerminal.h"
 
-MatrixTerminal::MatrixTerminal()
+RenderableTerminal::RenderableTerminal()
 	: m_vertexBuffer(0)
 	, m_size(0)
 	, m_changed(true)
@@ -10,7 +10,7 @@ MatrixTerminal::MatrixTerminal()
 {
 }
 
-MatrixTerminal::~MatrixTerminal()
+RenderableTerminal::~RenderableTerminal()
 {
 	if (renderer && m_vertexBuffer)
 	{
@@ -18,7 +18,7 @@ MatrixTerminal::~MatrixTerminal()
 	}
 }
 
-void MatrixTerminal::Render(IRenderer *renderer, glm::mat4 MVP)
+void RenderableTerminal::Render(IRenderer *renderer, glm::mat4 MVP)
 {
 	std::cout << "Unhandeld drawable terminal: " << typeid(*this).name() << std::endl;
 }

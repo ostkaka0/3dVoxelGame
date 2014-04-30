@@ -19,21 +19,21 @@ public:
 #pragma region Matrix initializing
 #pragma endregion
 #pragma region Matrix rendering
-	virtual void PushMatrix();
-	virtual void PopMatrix();
+//	virtual void PushMatrix() override;
+//	virtual void PopMatrix() override;
 
 	//virtual void PushMatrix(int matrixPtr);
-	virtual void DeleteMatrix(GLuint matrixPtr, GLuint size);
-	virtual void RenderMatrix(IMatrix *matrix, glm::mat4 MVP) override;
+	virtual void DeleteMatrix(GLuint matrixPtr, GLuint size) override;
+	virtual void RenderMatrix(IRenderable *matrix, glm::mat4 MVP) override;
 #pragma endregion
 #pragma region Matrix modifying
-	virtual void Translate(float x, float y, float z);
-	virtual void Rotate(float angle, float x, float y, float z);
-	virtual void Scale(float x, float y, float z);
-	virtual void SetColor(Color color);
+	/*virtual void Translate(float x, float y, float z) override;
+	virtual void Rotate(float angle, float x, float y, float z) override;
+	virtual void Scale(float x, float y, float z) override;
+	virtual void SetColor(Color color) override;*/
 #pragma endregion 
 
-	virtual void Clear(GLFWwindow *window);
-	virtual void Render(GLFWwindow *window);
+	virtual void Clear(GLFWwindow *window) override;
+	virtual void Render(GLFWwindow *window) override;
 };
 #endif
