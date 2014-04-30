@@ -3,6 +3,7 @@
 #include "GL.h"
 
 class VoxelMatrix;
+class Shader;
 
 class StateTest : public State
 {
@@ -27,6 +28,8 @@ class StateTest : public State
 	float initialFoV;
 
 	VoxelMatrix *voxels;
+
+	Shader *shader;
 public:
 	virtual void Load(Game *game, EventHandler *eventHandler);
 	virtual void Draw(Game *game, IRenderer *renderer);

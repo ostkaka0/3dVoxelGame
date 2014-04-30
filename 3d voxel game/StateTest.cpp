@@ -2,16 +2,18 @@
 
 #include "GL.h"
 #include <glm\glm.hpp>
+#include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Game.h"
 #include "IRenderer.h"
 #include "VoxelMatrix.h"
+#include "Shader.h"
 
 void StateTest::Load(Game *game, EventHandler *eventHandler)
 {
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-	Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	Projection = glm::perspective(90.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Or, for an ortho camera :
 	//Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
 
@@ -33,7 +35,7 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	verticalAngle = 0;
 	mouseSpeed = 0.005f;
 	moveSpeed = 3.0f;
-	initialFoV = 45.0f;
+	initialFoV = 90.0f;
 
 
 	voxels = new VoxelMatrix(16, 16, 16);
@@ -53,7 +55,9 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	voxels->setVoxel(15, 15, 0, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(15, 15, 15, reinterpret_cast<IVoxel*>(1));
 
-
+	shader = new Shader("shader");
+	
+	
 }
 
 void StateTest::Draw(Game *game, IRenderer *renderer)
@@ -61,8 +65,24 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 	//glMatrixMode(GL_PROJECTION);
 	//renderer->PushMatrix();
 	//renderer->Scale(1, 1 , -1);
+	shader->Bind();
+	shader->Update(MVP);
+	//renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl", "geometryshader.glsl");
 	//renderer->Translate(0,0, 10);
-	renderer->RenderMatrix(voxels, MVP);
+	//
+	for (int x = -8; x < 8; x++)
+	{
+		for (int y = -8; y < 8; y++)
+		{
+			for (int z = -8; z < 8; z++)
+			{
+				glm::mat4 ModelMatrix2 = glm::mat4(1.0);
+				ModelMatrix2 = glm::translate(ModelMatrix2, glm::vec3((float)x*2.f, (float)y*4.f, (float)z*2.f));
+				glm::mat4 MVP2 = Projection * View * ModelMatrix2;
+				renderer->RenderMatrix(voxels, MVP2);
+			}
+		}
+	}
 	//renderer->Scale(-1, -1, -1);
 	//renderer->Translate(0,0, -10);
 	//renderer->PopMatrix();
@@ -128,7 +148,7 @@ void StateTest::Update(Game *game)
 	float FoV = initialFoV;// - 5 * glfwGetMouseWheel(); // Now GLFW 3 requires setting up a callback for this. It's a bit too complicated for this beginner's tutorial, so it's disabled instead.
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-	Projection = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
+	Projection = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 256.0f);
 	// Camera matrix
 	View       = glm::lookAt(
 		position,           // Camera is here

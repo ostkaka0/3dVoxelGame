@@ -228,9 +228,6 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 
 							//////// << bra
 							g_vertex_buffer_data.push_back(Vertex(x, y, z));
-							g_vertex_buffer_data.push_back(Vertex(x, y, z));
-							g_vertex_buffer_data.push_back(Vertex(x, y, z));
-
 							///// << bra
 
 							/*g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
@@ -320,7 +317,9 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 			}
 		}
 
-		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+
+			//if (xx == 0.f || true) // ändå dålig kod!
+				glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
@@ -333,7 +332,7 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
 
-		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+		glDrawArrays(GL_POINTS, 0, mt->m_size);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
@@ -342,6 +341,8 @@ void OpenglRenderer::RenderMatrix(IMatrix *matrix, glm::mat4 MVP)
 	{
 		matrix->Render(this, MVP);
 	}
+
+
 }
 
 #pragma endregion

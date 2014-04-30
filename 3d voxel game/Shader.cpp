@@ -60,16 +60,16 @@ GLuint Shader::CreateShader(const std::string& text, unsigned int type)
 	if (shader == 0)
 		std::cerr << "Error: Shader creation failed!" << std::endl;
 
-	const GLchar *shaderSourceStrings[1];
-	GLint shaderSourceStringLengths[1];
+	const GLchar *shaderSourceStrings;
+	GLint shaderSourceStringLengths;
 
-	shaderSourceStrings[0] = text.c_str();
-	shaderSourceStringLengths[0] = text.length();
+	shaderSourceStrings = text.c_str();
+	shaderSourceStringLengths = text.length();
 
-	glShaderSource(shader, 1, shaderSourceStrings, shaderSourceStringLengths);
+	glShaderSource(shader, 1, &shaderSourceStrings, NULL);
 	glCompileShader(shader);
 
-	CheckShaderError(m_program, GL_LINK_STATUS, true, "Shader compilation failed");
+	CheckShaderError(shader, GL_LINK_STATUS, false, "Shader compilation failed");
 
 	return shader;
 }
@@ -82,8 +82,12 @@ Shader::Shader(const std::string &fileName)
 {
 	m_program = glCreateProgram();
 
-	m_shaders[0] = CreateShader(LoadShader(fileName + ".vertexshader"), GL_VERTEX_SHADER);
+	/*m_shaders[0] = CreateShader(LoadShader(fileName + ".vertexshader"), GL_VERTEX_SHADER);
 	m_shaders[1] = CreateShader(LoadShader(fileName + ".fragmentshader"), GL_VERTEX_SHADER);
+	m_shaders[2] = CreateShader(LoadShader(fileName + ".geometryshader"), GL_GEOMETRY_SHADER);*/
+	m_shaders[0] = CreateShader(LoadShader("vertexshader.glsl"), GL_VERTEX_SHADER);
+	m_shaders[1] = CreateShader(LoadShader("fragmenshader.glsl"), GL_FRAGMENT_SHADER);
+	m_shaders[2] = CreateShader(LoadShader("geometryshader.glsl"), GL_GEOMETRY_SHADER);
 
 	for (auto shader : m_shaders)
 		glAttachShader(m_program, shader);
@@ -111,4 +115,9 @@ Shader::~Shader(void)
 void Shader::Bind()
 {
 	glUseProgram(m_program);
+}
+
+void Shader::Update(const glm::mat4 &MVP)
+{
+	glUniformMatrix4fv(m_program, 1, GL_FALSE, &MVP[0][0]);
 }

@@ -2,12 +2,13 @@
 
 #include <string>
 #include <gl\glew.h>
+#include <glm\gtc\matrix_transform.hpp>
 
 class Shader
 {
 private:
-	// vertex shader + fragment shader
-	static const unsigned int NUM_SHADERS = 2; 
+	// vertex shader + fragment shader + geometry shader
+	static const unsigned int NUM_SHADERS = 3; 
 
 	GLuint m_program;
 	GLuint m_shaders[NUM_SHADERS];
@@ -25,6 +26,7 @@ public:
 	virtual ~Shader(void);
 
 	void Bind();
+	void Update(const glm::mat4 &MVP);
 };
 
 

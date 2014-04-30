@@ -24,7 +24,7 @@ public:
 
 	//virtual void PushMatrix(IMatrix *matrix)=0;
 	virtual void DeleteMatrix(GLuint matrixPtr, GLuint size)=0;
-	virtual void RenderMatrix(IMatrix* matrix, glm::mat4 MVP)=0;
+	virtual void RenderMatrix(IMatrix *matrix, glm::mat4 MVP)=0;
 #pragma endregion
 #pragma region Matrix modifying
 	virtual void Translate(float x, float y, float z)=0;

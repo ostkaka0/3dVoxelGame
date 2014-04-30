@@ -1,6 +1,6 @@
 #version 330
 
-layout(triangles) in;
+layout(points) in;
 layout(triangle_strip, max_vertices=14) out;
 
 in vec3 geometryColor[];
