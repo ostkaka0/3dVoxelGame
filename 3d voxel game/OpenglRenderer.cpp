@@ -11,6 +11,7 @@
 #include "Game.h"
 #include "RenderableTerminal.h"
 #include "VoxelMatrix.h"
+#include "Torus.h"
 #include "Vertex.h"
 
 OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
@@ -187,6 +188,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 			if (mt->m_vertexBuffer)
 				DeleteMatrix(mt->m_vertexBuffer, mt->m_size);
 
+#pragma region VoxelMatrix
 			if (typeid(*mt) == typeid(VoxelMatrix))
 			{
 				VoxelMatrix *matrix = reinterpret_cast<VoxelMatrix*>(mt);
@@ -215,6 +217,77 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 							//continue;
 							if (matrix->getVoxel(x, y, z) == 0)
 								continue;
+
+							GLfloat r,g,b;
+
+							r = 0.25f + (float)(rand()%64)/256.f;
+							g = 0.25f + (float)(rand()%64)/256.f;
+							b = 0.25f + (float)(rand()%64)/256.f;
+
+#pragma region cube2
+							const Vertex vertices[8] =
+							{
+								Vertex(x-0.5, y-0.5, z-0.5, r, g, b), Vertex(x-0.5, y-0.5, z+0.5, r, g, b),
+								Vertex(x-0.5, y+0.5, z-0.5, r, g, b), Vertex(x-0.5, y+0.5, z+0.5, r, g, b), 
+								Vertex(x+0.5, y-0.5, z-0.5, r, g, b), Vertex(x+0.5, y-0.5, z+0.5, r, g, b),
+								Vertex(x+0.5, y+0.5, z-0.5, r, g, b), Vertex(x+0.5, y+0.5, z+0.5, r, g, b)
+							};
+		
+		
+							//triangle strip
+							/*const int vertexIds[14] =
+							{
+								 0,   1,
+								 2,   3,
+								 7,   1,
+								 5,   0,
+								 4,   2,
+								 6,   7,
+								 4,   5,
+							};*/
+
+							//faces
+							const int vertexIds[36] =
+							{
+								 0, 1, 2,
+								 2, 1, 3,
+
+								 1, 5, 3,
+								 3, 5, 7,
+
+								 5, 4, 7,
+								 7, 4, 6,
+
+								 4, 0, 6,
+								 6, 0, 2,
+
+								 4, 5, 0,
+								 5, 0, 1,
+
+								 6, 7, 2,
+								 2, 7, 3
+							};
+
+							const bool isVisible[6] = 
+							{
+								(matrix->getVoxel(x-1, y, z) == 0 || x == 0),
+								(matrix->getVoxel(x, y, z+1) == 0 || z == 15),
+								(matrix->getVoxel(x+1, y, z) == 0 || x == 15),
+								(matrix->getVoxel(x, y, z-1) == 0 || z == 0),
+								(matrix->getVoxel(x, y-1, z) == 0 || y == 0),
+								(matrix->getVoxel(x, y+1, z) == 0 || y == 15)
+							};
+
+							for(int i = 0; i < 36; i++)
+							{
+								if (isVisible[(int)floor((float)i/6.f)])
+								{
+									int v = vertexIds[i];
+									g_vertex_buffer_data.push_back(vertices[v]); 
+								}
+							}
+#pragma endregion
+
 #pragma region cube
 							///////////////////////////////////////////////////////////////
 							//// skrev denna kod helt manuellt efter att jag bytte till Vertex-object
@@ -227,7 +300,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 							g_vertex_buffer_data.push_back(Vertex(x-0.0F, y+0.1F, z-0.0F));*/
 
 							//////// << bra
-							g_vertex_buffer_data.push_back(Vertex(x, y, z));
+							//g_vertex_buffer_data.push_back(Vertex(x, y, z));
 							///// << bra
 
 							/*g_vertex_buffer_data.push_back(Vertex(x-0.5F, y-0.5F, z-0.5F));
@@ -294,7 +367,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 					}
 				}
 
-				for(Vertex &v : g_vertex_buffer_data)
+				/*for(Vertex &v : g_vertex_buffer_data)
 				{
 					//v.SetColor(rand() % 256, rand() % 256, rand() % 256, rand() % 256);
 					GLfloat r,g,b;
@@ -303,7 +376,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 					b = (float)(rand()%256)/256.f;
 
 					v.SetColor(r, g, b, 1.0f);
-				}
+				}*/
 
 				// Give our vertices to OpenGL.
 				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
@@ -315,6 +388,87 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 				vertexBuffers.push_back(std::pair<GLuint, GLuint>(vertexbuffer, g_vertex_buffer_data.size()));
 
 			}
+#pragma endregion
+#pragma region torus
+
+			///////////////////////////////////////
+			//  Torus                            //
+			///////////////////////////////////////
+
+			else if (typeid(*mt) == typeid(Torus))
+			{
+
+				Torus *matrix = reinterpret_cast<Torus*>(mt);
+
+				GLuint vertexbuffer;
+				glGenBuffers(1, &vertexbuffer);
+				glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
+				//GLuint colorVertexbuffer;
+				//glGenBuffers(1, &colorVertexbuffer);
+				//glBindBuffer(GL_ARRAY_BUFFER, colorVertexbuffer);
+
+				std::vector<Vertex> g_vertex_buffer_data;
+				g_vertex_buffer_data.reserve(32*32*6); // för att snabba på!
+
+				  //glFrontFace(GL_CW);
+ 
+				  //glBindTexture(GL_TEXTURE_2D, texture);
+				  //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+ 
+				  const double PI = 3.1415926535897932384626433832795;
+				  const double TAU = 2 * PI;
+				  const int rSeg = 128;
+				  const int cSeg = 256;
+				  const double c = 32000.f;
+				  const double r = 8000.f;
+ 
+				  for (int i = 0; i < rSeg; i++) {
+					//glBegin(GL_QUAD_STRIP);
+					for (int j = 0; j <= cSeg; j++) {
+					  for (int l = 0; l < 6; l++) {
+						  
+						  //std::cout << i << " " << j << " " << l << std::endl;
+
+						int k = (l%3 == 1 || l == 5)? 1:0;		// 0,1,0 , 0,1,1
+						int m = j + ((l >= 2 && l <= 4)? 1:0);	// 0,0,1 , 1,1,0
+
+						//if (l >= 2)
+						//	k = 1-k;
+
+						double s = (i + k) % rSeg + 0.5;
+						double t = m % (cSeg + 1);
+ 
+						double x = (c + r * cos(s * TAU / rSeg)) * cos(t * TAU / cSeg);
+						double y = (c + r * cos(s * TAU / rSeg)) * sin(t * TAU / cSeg);
+						double z = r * sin(s * TAU / rSeg);
+ 
+						double u = (i + k) / (float) rSeg;
+						double v = t / (float) cSeg;
+ 
+						//glTexCoord2d(u, v);
+						//glNormal3f(2 * x, 2 * y, 2 * z);
+						//glVertex3d(2 * x, 2 * y, 2 * z);
+						g_vertex_buffer_data.push_back(Vertex(2*x, 2*y+2*c-2*r-8, 2*z, 0.0625f, 0.25f + rand()%32/256.f, 0.75f));
+					  }
+					}
+					//glEnd();
+				  }
+ 
+				  //glFrontFace(GL_CCW);
+				
+
+				// Give our vertices to OpenGL.
+				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
+				matrix->m_vertexBuffer = vertexbuffer;
+				//matrix->m_colorVertexbuffer = colorVertexbuffer;
+				matrix->m_size = g_vertex_buffer_data.size();
+				matrix->m_changed = false;
+
+				vertexBuffers.push_back(std::pair<GLuint, GLuint>(vertexbuffer, g_vertex_buffer_data.size()));
+			}
+
+#pragma endrgion
 		}
 
 
@@ -332,7 +486,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
 
-		glDrawArrays(GL_POINTS, 0, mt->m_size);
+		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);

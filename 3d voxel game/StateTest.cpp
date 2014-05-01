@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "IRenderer.h"
 #include "VoxelMatrix.h"
+#include "Torus.h"
 #include "Shader.h"
 
 void StateTest::Load(Game *game, EventHandler *eventHandler)
@@ -34,13 +35,25 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	horizontalAngle = 0;
 	verticalAngle = 0;
 	mouseSpeed = 0.005f;
-	moveSpeed = 3.0f;
+	moveSpeed = 16.0f;
 	initialFoV = 90.0f;
 
+	torus = new Torus();
 
-	voxels = new VoxelMatrix(16, 16, 16);
+	voxels = new VoxelMatrix(64, 64, 64);
 
-	voxels->setVoxel(3, 3, 3, reinterpret_cast<IVoxel*>(1));
+	for (int x = -32; x < 32; x++)
+	{
+		for (int y = -32; y < 32; y++)
+		{
+			for (int z = -32; z < 32; z++)
+			{
+				if (x*x+y*y+z*z <= 30*30)
+					voxels->setVoxel(x+32, y+32, z+32, reinterpret_cast<IVoxel*>(1));
+			}
+		}
+	}
+	/*voxels->setVoxel(3, 3, 3, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(4, 3, 3, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(5, 3, 3, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(5, 4, 3, reinterpret_cast<IVoxel*>(1));
@@ -53,10 +66,12 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	voxels->setVoxel(15, 0, 0, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(15, 0, 15, reinterpret_cast<IVoxel*>(1));
 	voxels->setVoxel(15, 15, 0, reinterpret_cast<IVoxel*>(1));
-	voxels->setVoxel(15, 15, 15, reinterpret_cast<IVoxel*>(1));
+	voxels->setVoxel(15, 15, 15, reinterpret_cast<IVoxel*>(1));*/
 
 	//shader = new Shader("shader");
 	
+	lastTime = glfwGetTime();
+	nbFrames = 0;
 	
 }
 
@@ -65,28 +80,40 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 	//shader->Bind();
 	//shader->Update(MVP);
 
-	for (int x = -8; x < 8; x++)
+	for (int x = -4; x < 4; x++)
 	{
-		for (int y = -8; y < 8; y++)
+		for (int y = -1; y < 1; y++)
 		{
-			for (int z = -8; z < 8; z++)
+			for (int z = -4; z < 4; z++)
 			{
 				glm::mat4 ModelMatrix2 = glm::mat4(1.0);
-				ModelMatrix2 = glm::translate(ModelMatrix2, glm::vec3((float)x*16.f, (float)y*16.f, (float)z*16.f));
+				ModelMatrix2 = glm::translate(ModelMatrix2, glm::vec3((float)x*voxels->getWidth(), (float)y*voxels->getHeight(), (float)z*voxels->getWidth()));
 				glm::mat4 MVP2 = Projection * View * ModelMatrix2;
 				renderer->RenderMatrix(voxels, MVP2);
 			}
 		}
 	}
+
+	renderer->RenderMatrix(torus, MVP);
 }
 
 void StateTest::Update(Game *game)
 {
+	double currentTime = glfwGetTime();
+     nbFrames++;
+     if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1 sec ago
+         // printf and reset timer
+         printf("%f ms/frame\n", 1000.0/double(nbFrames));
+         nbFrames = 0;
+         lastTime += 1.0;
+     }
+
+
 	// glfwGetTime is called only once, the first time this function is called
 	static double lastTime = glfwGetTime();
 
 	// Compute time difference between current and last frame
-	double currentTime = glfwGetTime();
+//	double currentTime = glfwGetTime();
 	float deltaTime = float(currentTime - lastTime);
 
 	// Get mouse position
@@ -119,7 +146,7 @@ void StateTest::Update(Game *game)
 
 	float tempMoveSpeed = moveSpeed;
 	if(glfwGetKey(game->getWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)
-		tempMoveSpeed = tempMoveSpeed*16;
+		tempMoveSpeed = tempMoveSpeed*256;
 	// Move forward
 	if (glfwGetKey(game->getWindow(), GLFW_KEY_W ) == GLFW_PRESS){
 		position += direction * deltaTime * tempMoveSpeed;
@@ -140,7 +167,7 @@ void StateTest::Update(Game *game)
 	float FoV = initialFoV;// - 5 * glfwGetMouseWheel(); // Now GLFW 3 requires setting up a callback for this. It's a bit too complicated for this beginner's tutorial, so it's disabled instead.
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-	Projection = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 256.0f);
+	Projection = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 655360.f);
 	// Camera matrix
 	View       = glm::lookAt(
 		position,           // Camera is here

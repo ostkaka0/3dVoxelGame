@@ -4,6 +4,7 @@
 
 class VoxelMatrix;
 class Shader;
+class Torus;
 
 class StateTest : public State
 {
@@ -28,8 +29,14 @@ class StateTest : public State
 	float initialFoV;
 
 	VoxelMatrix *voxels;
+	Torus *torus;
 
 	Shader *shader;
+
+	// fps counter
+	double lastTime;
+	int nbFrames;
+
 public:
 	virtual void Load(Game *game, EventHandler *eventHandler);
 	virtual void Draw(Game *game, IRenderer *renderer);
