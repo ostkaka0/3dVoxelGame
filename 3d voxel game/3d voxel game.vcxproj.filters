@@ -94,6 +94,12 @@
     <Filter Include="Header Files\Entity">
       <UniqueIdentifier>{bb3b80d2-e992-4ad5-8a13-0ca58bd2e7cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Texture">
+      <UniqueIdentifier>{10de2860-2831-4879-a740-6d0b8507cdfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Texture">
+      <UniqueIdentifier>{c589e5e8-b340-40d8-a097-58d38733b877}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -140,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="Torus.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Graphics\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +250,15 @@
     </ClInclude>
     <ClInclude Include="Torus.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderType.h">
+      <Filter>Header Files\Graphics\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex2.h">
+      <Filter>Header Files\Graphics\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

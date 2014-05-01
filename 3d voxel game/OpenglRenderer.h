@@ -4,15 +4,18 @@
 #include "GL.h"
 #include "IRenderer.h"
 #include "Color.h"
+#include "ShaderType.h"
+
 class Shader;
 
 class Game;
 
 class OpenglRenderer : public IRenderer
 {
-	GLuint MatrixID;
+	//GLuint MatrixID;
 	GLuint VertexArrayID;
-	Shader *shader;
+	Shader *shader[SHADER_MAX];
+	GLuint *uniforms;
 public:
 	OpenglRenderer(Game *game, int width, int height);
 	~OpenglRenderer();

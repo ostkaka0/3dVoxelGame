@@ -10,9 +10,10 @@ private:
 	// vertex shader + fragment shader + geometry shader
 	static const unsigned int NUM_SHADERS = 3; 
 
-	GLint m_matrixId;
+	//GLint m_matrixId;
 	GLuint m_program;
 	GLuint m_shaders[NUM_SHADERS];
+	GLint *m_uniforms;
 
 	Shader(const Shader &other) {};
 	Shader &operator=(const Shader &other) {};
@@ -23,12 +24,13 @@ private:
 
 protected:
 public:
-	Shader(const std::string &fileName);
+	Shader(const std::string &fileName, const std::string *uniforms);
 	virtual ~Shader(void);
 
 	void Bind();
 	void Update(const glm::mat4 &MVP);
-	GLint getMatrixId() { return m_matrixId; };
+	GLint getMatrixId() { return m_uniforms[0]; };
+	GLint getUniform(const int index);
 };
 
 

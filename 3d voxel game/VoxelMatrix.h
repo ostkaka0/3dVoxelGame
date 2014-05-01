@@ -13,6 +13,9 @@ public:
 public:
 	VoxelMatrix(const int width, const int height, const int depth);
 	VoxelMatrix(const int width, const int height, const int depth, IVoxel **voxels);
+
+	virtual ShaderType getShaderType() const override;
+
 	int getWidth();
 	int getHeight();
 	IVoxel *getVoxel(int x, int y, int z);

@@ -26,6 +26,11 @@ VoxelMatrix::VoxelMatrix(const int width, const int height, const int depth, IVo
 {
 }
 
+ShaderType VoxelMatrix::getShaderType() const
+{
+	return SHADER_DEFAULT;
+}
+
 int VoxelMatrix::getWidth()
 {
 	return m_width;

@@ -13,6 +13,7 @@
 #include "VoxelMatrix.h"
 #include "Torus.h"
 #include "Vertex.h"
+#include "Vertex2.h"
 #include "Shader.h"
 
 OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
@@ -24,9 +25,13 @@ OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 	glBindVertexArray(VertexArrayID);
 	glEnableVertexAttribArray(0);
 
-	shader = new Shader("lol");
-	shader->Bind();
-	MatrixID = shader->getMatrixId();
+	std::string lol = std::string("MVP");
+	shader[SHADER_DEFAULT] = new Shader("default", &lol);
+	std::string lol2[2];
+	lol2[0] = "MVP";
+	lol2[1] = "myTextureSampler";
+	shader[SHADER_SPACE] = new Shader("space", lol2);
+	//MatrixID = shader->getMatrixId();
 }
 
 OpenglRenderer::~OpenglRenderer()
@@ -41,7 +46,8 @@ OpenglRenderer::~OpenglRenderer()
 
 GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragmentFilePath, const char *geometryFilePath)
 {
-	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	return 0;
+	/*GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 	GLuint GeometryShaderID = glCreateShader(GL_GEOMETRY_SHADER);
 
@@ -143,7 +149,7 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 
 	glUseProgram(ProgramID);
 
-	return ProgramID;
+	return ProgramID;*/
 }
 
 #pragma region Matrix initializing
@@ -186,6 +192,8 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 	if (RenderableTerminal *mt = dynamic_cast<RenderableTerminal*>(matrix))
 	{
+		shader[mt->getShaderType()]->Bind();
+
 		if (mt->m_changed)
 		{
 			if (mt->m_vertexBuffer)
@@ -197,6 +205,9 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 				VoxelMatrix *matrix = reinterpret_cast<VoxelMatrix*>(mt);
 
 				GLuint vertexbuffer;
+
+				
+
 				glGenBuffers(1, &vertexbuffer);
 				glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
@@ -400,10 +411,14 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 			else if (typeid(*mt) == typeid(Torus))
 			{
+				
 
 				Torus *matrix = reinterpret_cast<Torus*>(mt);
 
 				GLuint vertexbuffer;
+
+				//spaceShader->Bind();
+
 				glGenBuffers(1, &vertexbuffer);
 				glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
@@ -411,7 +426,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 				//glGenBuffers(1, &colorVertexbuffer);
 				//glBindBuffer(GL_ARRAY_BUFFER, colorVertexbuffer);
 
-				std::vector<Vertex> g_vertex_buffer_data;
+				std::vector<Vertex2> g_vertex_buffer_data;
 				g_vertex_buffer_data.reserve(32*32*6); // för att snabba på!
 
 				  //glFrontFace(GL_CW);
@@ -452,7 +467,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 						//glTexCoord2d(u, v);
 						//glNormal3f(2 * x, 2 * y, 2 * z);
 						//glVertex3d(2 * x, 2 * y, 2 * z);
-						g_vertex_buffer_data.push_back(Vertex(2*x, 2*y+2*c-2*r-8, 2*z, 0.0625f, 0.25f + rand()%32/256.f, 0.75f));
+						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-8, 2*z, 256.f-(float)s*256.f/(float)rSeg,256.f-(float)t*256.f/(float)cSeg));
 					  }
 					}
 					//glEnd();
@@ -476,24 +491,73 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 
 			//if (xx == 0.f || true) // ändå dålig kod!
-				glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		//shader->Update(MVP);
+		shader[matrix->getShaderType()]->Bind();
+		shader[matrix->getShaderType()]->Update(MVP);//glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		
 
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
+		if (typeid(*matrix) == typeid(Torus))
+		{
+			Torus *torus = reinterpret_cast<Torus*>(matrix);
+			GLint textureId = shader[matrix->getShaderType()]->getUniform(1);
 
-		//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, torus->texture.getTextureId());
+			// Set our "myTextureSampler" sampler to user Texture Unit 0
+			glUniform1i(textureId, 0);
 
-		//glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
+			glEnableVertexAttribArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2), reinterpret_cast<void*>(offsetof(Vertex2, position)));//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
 
-		glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+			//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
+			//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+			//glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2), reinterpret_cast<void*>(offsetof(Vertex2, UV)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
+
+			glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+		}
+		else
+		{
+			glEnableVertexAttribArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
+
+			//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
+			//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
+
+			//glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
+
+			glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+
+			}
+
+			//shader->Update(MVP);
+
+			glEnableVertexAttribArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position))); //0, position
+
+			//glEnableVertexAttribArray(1);       ////normal-saker kan man skita i just nu
+			//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(baseOffset + offsetof(Vertex, normal)));       ////normal-saker kan man skita i just nu
+
+			//glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
+
+			glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
+
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
 	}
 	else
 	{

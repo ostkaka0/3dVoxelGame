@@ -60,15 +60,15 @@ GLuint Shader::CreateShader(const std::string& source, GLenum type)
 	return shaderId;
 }
 
-Shader::Shader(const std::string &fileName)
+Shader::Shader(const std::string &fileName, const std::string *uniforms)
 {
 	GLint error = glGetError();
-	/*m_shaders[0] = CreateShader(LoadShader(fileName + ".vertexshader"), GL_VERTEX_SHADER);
-	m_shaders[1] = CreateShader(LoadShader(fileName + ".fragmentshader"), GL_VERTEX_SHADER);
-	m_shaders[2] = CreateShader(LoadShader(fileName + ".geometryshader"), GL_GEOMETRY_SHADER);*/
-	m_shaders[0] = CreateShader(LoadShader("vertexshader.glsl"), GL_VERTEX_SHADER);
-	m_shaders[1] = CreateShader(LoadShader("fragmentshader.glsl"), GL_FRAGMENT_SHADER);
-	m_shaders[2] = CreateShader(LoadShader("geometryshader.glsl"), GL_GEOMETRY_SHADER);
+	m_shaders[0] = CreateShader(LoadShader("shaders\\" + fileName + ".vertexshader"), GL_VERTEX_SHADER);
+	m_shaders[1] = CreateShader(LoadShader("shaders\\" + fileName + ".fragmentshader"), GL_FRAGMENT_SHADER);
+	m_shaders[2] = CreateShader(LoadShader("shaders\\" + fileName + ".geometryshader"), GL_GEOMETRY_SHADER);
+	//m_shaders[0] = CreateShader(LoadShader("vertexshader.glsl"), GL_VERTEX_SHADER);
+	//m_shaders[1] = CreateShader(LoadShader("fragmentshader.glsl"), GL_FRAGMENT_SHADER);
+	//m_shaders[2] = CreateShader(LoadShader("geometryshader.glsl"), GL_GEOMETRY_SHADER);
 	error = glGetError();
 
 	m_program = glCreateProgram();
@@ -97,7 +97,16 @@ Shader::Shader(const std::string &fileName)
 	for (auto shader : m_shaders)
 		glDeleteShader(shader);
 
-	m_matrixId = glGetUniformLocation(m_program, "MVP");
+	//m_matrixId = glGetUniformLocation(m_program, "MVP");
+
+	m_uniforms = new GLint[sizeof(*uniforms)/sizeof(std::string)];
+
+	for (int i = 0; i < sizeof(*uniforms)/sizeof(std::string); i++)
+	{
+		const char *str = uniforms[i].c_str();
+		m_uniforms[i] = glGetUniformLocation(m_program, str);
+	}
+
 }
 
 Shader::~Shader(void)
@@ -118,5 +127,11 @@ void Shader::Bind()
 
 void Shader::Update(const glm::mat4 &MVP)
 {
-	glUniformMatrix4fv(m_program, 1, GL_FALSE, &MVP[0][0]);
+	glUniformMatrix4fv(m_uniforms[0], 1, GL_FALSE, &MVP[0][0]);
+	//glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+}
+
+GLint Shader::getUniform(const int index)
+{
+	return m_uniforms[index];
 }
