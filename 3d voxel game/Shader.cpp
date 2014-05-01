@@ -94,8 +94,8 @@ Shader::Shader(const std::string &fileName)
 	fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
 	error = glGetError();
 
-	//for (auto shader : m_shaders)
-		//glDeleteShader(shader);
+	for (auto shader : m_shaders)
+		glDeleteShader(shader);
 
 	m_matrixId = glGetUniformLocation(m_program, "MVP");
 }
