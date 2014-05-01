@@ -2,103 +2,102 @@
 #include <fstream>
 
 #include "Shader.h"
+#include <vector>
 
-
-static GLuint CreateShader(const std::string &text, GLenum shaderType);
-
-// private:
 
 std::string Shader::LoadShader(const std::string& fileName)
 {
 	std::ifstream file;
-    file.open((fileName).c_str());
+	file.open((fileName).c_str());
 
-    std::string output;
-    std::string line;
+	std::string output;
+	std::string line;
 
-    if(file.is_open())
-    {
-        while(file.good())
-        {
-            getline(file, line);
-			output.append(line + "\n");
-        }
-    }
-    else
-    {
+	if(file.is_open())
+	{
+		while(file.good())
+		{
+			getline(file, line);
+			output.append("\n" + line);
+		}
+	}
+	else
+	{
 		std::cerr << "Unable to load shader: " << fileName << std::endl;
-    }
+	}
 
-    return output;
+	return output;
 }
 
-void Shader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
+void Shader::CheckShaderError(GLuint shader, const std::string& errorMessage)
 {
-	GLint success = 0;
-    GLchar error[1024] = { 0 };
+	GLint result = GL_FALSE;
+	int errorLength;
 
-    if(isProgram)
-        glGetProgramiv(shader, flag, &success);
-    else
-        glGetShaderiv(shader, flag, &success);
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &errorLength);
 
-    if(success == GL_FALSE)
-    {
-        if(isProgram)
-            glGetProgramInfoLog(shader, sizeof(error), NULL, error);
-        else
-            glGetShaderInfoLog(shader, sizeof(error), NULL, error);
-
-        std::cerr << "Error: " << errorMessage << ": '" << error << "'" << std::endl;
-    }
+	std::vector<char> error(errorLength);
+	glGetShaderInfoLog(shader, errorLength, NULL, &error[0]);
+	fprintf(stdout, "%s\n", &error[0]);
 }
 
-GLuint Shader::CreateShader(const std::string& text, unsigned int type)
+GLuint Shader::CreateShader(const std::string& source, GLenum type)
 {
-	GLuint shader = glCreateShader(type);
+	GLuint shaderId = glCreateShader(type);
 
-	if (shader == 0)
+	if (shaderId == 0)
 		std::cerr << "Error: Shader creation failed!" << std::endl;
 
-	const GLchar *shaderSourceStrings;
-	GLint shaderSourceStringLengths;
+	// Compile Shader
+	std::cout << "Compiling Shader: " << type << std::endl;
+	char const * ShaderSourcePointer = source.c_str();
+	glShaderSource(shaderId, 1, &ShaderSourcePointer , NULL);
+	glCompileShader(shaderId);
 
-	shaderSourceStrings = text.c_str();
-	shaderSourceStringLengths = text.length();
+	CheckShaderError(shaderId, "Shader compilation failed");
 
-	glShaderSource(shader, 1, &shaderSourceStrings, NULL);
-	glCompileShader(shader);
-
-	CheckShaderError(shader, GL_LINK_STATUS, false, "Shader compilation failed");
-
-	return shader;
+	return shaderId;
 }
-
-// private cpp-only:
-
-// public:
 
 Shader::Shader(const std::string &fileName)
 {
-	m_program = glCreateProgram();
-
+	GLint error = glGetError();
 	/*m_shaders[0] = CreateShader(LoadShader(fileName + ".vertexshader"), GL_VERTEX_SHADER);
 	m_shaders[1] = CreateShader(LoadShader(fileName + ".fragmentshader"), GL_VERTEX_SHADER);
 	m_shaders[2] = CreateShader(LoadShader(fileName + ".geometryshader"), GL_GEOMETRY_SHADER);*/
 	m_shaders[0] = CreateShader(LoadShader("vertexshader.glsl"), GL_VERTEX_SHADER);
-	m_shaders[1] = CreateShader(LoadShader("fragmenshader.glsl"), GL_FRAGMENT_SHADER);
+	m_shaders[1] = CreateShader(LoadShader("fragmentshader.glsl"), GL_FRAGMENT_SHADER);
 	m_shaders[2] = CreateShader(LoadShader("geometryshader.glsl"), GL_GEOMETRY_SHADER);
+	error = glGetError();
+
+	m_program = glCreateProgram();
+	error = glGetError();
 
 	for (auto shader : m_shaders)
 		glAttachShader(m_program, shader);
+	error = glGetError();
 
 	//glBindAttribLocation(m_program, 0, "position");
 
+	// Link Program
 	glLinkProgram(m_program);
-	CheckShaderError(m_program, GL_LINK_STATUS, true, "Program linking failed");
+	error = glGetError();
 
-	glValidateProgram(m_program);
-	CheckShaderError(m_program, GL_VALIDATE_STATUS, true, "Program is invalid");
+	// Check Program
+	GLint Result = GL_FALSE;
+	int InfoLogLength;
+	glGetProgramiv(m_program, GL_LINK_STATUS, &Result);
+	glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	std::vector<char> ProgramErrorMessage(std::max(InfoLogLength, int(1)) );
+	glGetProgramInfoLog(m_program, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+	fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
+	error = glGetError();
+
+	//for (auto shader : m_shaders)
+		//glDeleteShader(shader);
+
+	m_matrixId = glGetUniformLocation(m_program, "MVP");
 }
 
 Shader::~Shader(void)

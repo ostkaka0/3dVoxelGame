@@ -13,6 +13,7 @@
 #include "VoxelMatrix.h"
 #include "Torus.h"
 #include "Vertex.h"
+#include "Shader.h"
 
 OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 {
@@ -23,7 +24,9 @@ OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 	glBindVertexArray(VertexArrayID);
 	glEnableVertexAttribArray(0);
 
-
+	shader = new Shader("lol");
+	shader->Bind();
+	MatrixID = shader->getMatrixId();
 }
 
 OpenglRenderer::~OpenglRenderer()
@@ -474,6 +477,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 			//if (xx == 0.f || true) // ändå dålig kod!
 				glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		//shader->Update(MVP);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);

@@ -10,6 +10,7 @@ private:
 	// vertex shader + fragment shader + geometry shader
 	static const unsigned int NUM_SHADERS = 3; 
 
+	GLint m_matrixId;
 	GLuint m_program;
 	GLuint m_shaders[NUM_SHADERS];
 
@@ -17,8 +18,8 @@ private:
 	Shader &operator=(const Shader &other) {};
 
 	std::string LoadShader(const std::string& fileName);
-	void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
-	GLuint CreateShader(const std::string& text, unsigned int type);
+	void CheckShaderError(GLuint shader, const std::string& errorMessage);
+	GLuint CreateShader(const std::string& text, GLenum type);
 
 protected:
 public:
@@ -27,6 +28,7 @@ public:
 
 	void Bind();
 	void Update(const glm::mat4 &MVP);
+	GLint getMatrixId() { return m_matrixId; };
 };
 
 

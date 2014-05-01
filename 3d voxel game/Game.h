@@ -6,6 +6,7 @@ class GLFWwindow;
 class IRenderer;
 class State;
 class EventHandler;
+class Shader;
 
 class Game
 {

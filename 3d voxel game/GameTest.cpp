@@ -3,6 +3,7 @@
 #include "GameTest.h"
 #include "StateTest.h"
 #include "OpenglRenderer.h"
+#include "Shader.h"
 
 
 #include <Windows.h>
@@ -11,6 +12,7 @@
 
 GameTest::GameTest()
 {
+
 }
 
 GameTest::~GameTest()
@@ -23,7 +25,7 @@ void GameTest::Initialize()
 	state = new StateTest();
 #ifdef CLIENT
 	renderer = new OpenglRenderer(this, width, height);
-	renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl", "geometryshader.glsl");
+	//renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl", "geometryshader.glsl");
 	glEnable(GL_DEPTH_TEST);
 	//glFrustum(-0.1,0.1,-0.1,0.1,0.1,1024);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

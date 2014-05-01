@@ -4,6 +4,7 @@
 #include "GL.h"
 #include "IRenderer.h"
 #include "Color.h"
+class Shader;
 
 class Game;
 
@@ -11,6 +12,7 @@ class OpenglRenderer : public IRenderer
 {
 	GLuint MatrixID;
 	GLuint VertexArrayID;
+	Shader *shader;
 public:
 	OpenglRenderer(Game *game, int width, int height);
 	~OpenglRenderer();
@@ -19,8 +21,8 @@ public:
 #pragma region Matrix initializing
 #pragma endregion
 #pragma region Matrix rendering
-//	virtual void PushMatrix() override;
-//	virtual void PopMatrix() override;
+	//	virtual void PushMatrix() override;
+	//	virtual void PopMatrix() override;
 
 	//virtual void PushMatrix(int matrixPtr);
 	virtual void DeleteMatrix(GLuint matrixPtr, GLuint size) override;
