@@ -19,7 +19,7 @@
 OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 {
 	glViewport(0, 0, width, height);
-	glClearColor(0, 0, 255, 255);
+	glClearColor(0, 0, 0, 255);
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -436,8 +436,8 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
  
 				  const double PI = 3.1415926535897932384626433832795;
 				  const double TAU = 2 * PI;
-				  const int rSeg = 128;
-				  const int cSeg = 256;
+				  const int rSeg = 64;//128;
+				  const int cSeg = 128;//256;
 				  const double c = 32000.f;
 				  const double r = 8000.f;
  
@@ -467,7 +467,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 						//glTexCoord2d(u, v);
 						//glNormal3f(2 * x, 2 * y, 2 * z);
 						//glVertex3d(2 * x, 2 * y, 2 * z);
-						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-8, 2*z, 256.f-(float)s*256.f/(float)rSeg,256.f-(float)t*256.f/(float)cSeg));
+						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-8, 2*z, (float)t/**matrix->texture.getHeight()*//cSeg,(float)s/*matrix->texture.getWidth()*//rSeg/2));
 					  }
 					}
 					//glEnd();
@@ -477,7 +477,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 				
 
 				// Give our vertices to OpenGL.
-				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex2), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
 				matrix->m_vertexBuffer = vertexbuffer;
 				//matrix->m_colorVertexbuffer = colorVertexbuffer;
 				matrix->m_size = g_vertex_buffer_data.size();
@@ -514,6 +514,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 			//glEnableVertexAttribArray(1);
 			glEnableVertexAttribArray(1);
+			//glBindBuffer(GL_ARRAY_BUFFER, mt->m_vertexBuffer);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2), reinterpret_cast<void*>(offsetof(Vertex2, UV)));//glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color))); //1, färg
 
 			glDrawArrays(GL_TRIANGLES, 0, mt->m_size);

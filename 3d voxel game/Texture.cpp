@@ -5,16 +5,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fstream>
+#include <vector>
 
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 
+#include "stb_image.h"
+
 Texture::Texture(std::string name)
 {
 	name = "textures\\" + name;
-	const char *imagepath = name.c_str();
+	const char *fileName = name.c_str();
 
-	printf("Reading image %s\n", imagepath);
+		int width, height, numComponents;
+    unsigned char* data = stbi_load(fileName, &width, &height, &numComponents, 4);
+
+    if(data == NULL)
+		std::cerr << "Unable to load texture: " << fileName << std::endl;
+        
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+        
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    stbi_image_free(data);
+
+	this->width = width;
+	this->height = height;
+
+	/*printf("Reading image %s\n", imagepath);
 
 	// Data read from the header of the BMP file
 	unsigned char header[54];
@@ -62,8 +86,10 @@ Texture::Texture(std::string name)
 	// Read the information about the image
 	dataPos    = *(int*)&(header[0x0A]);
 	imageSize  = *(int*)&(header[0x22]);
-	width      = *(int*)&(header[0x12]);
-	height     = *(int*)&(header[0x16]);
+	width = header[18] + (header[19] << 8);
+    height = header[22] + (header[23] << 8);
+	//width      = *(int*)&(header[0x12]);//17
+	//height     = *(int*)&(header[0x16]);//21
 
 	// Some BMP files are misformatted, guess missing information
 	if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
