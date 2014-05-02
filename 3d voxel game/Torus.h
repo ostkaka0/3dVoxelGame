@@ -12,6 +12,7 @@ public:
 	Torus(void);
 	virtual ~Torus(void);
 
+	virtual bool Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType) override;
 	virtual ShaderType getShaderType() const override;
 };
 

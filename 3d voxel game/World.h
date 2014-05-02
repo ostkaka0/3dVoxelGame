@@ -20,7 +20,7 @@ namespace world
 		virtual ~World(void);
 
 		// IRenderer
-		virtual void Render(IRenderer *renderer, glm::mat4 MVP) override;
+		virtual bool Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType) override;
 
 		// IWorld
 		virtual void SetVoxel(unsigned char x, unsigned char y, unsigned char z, IVoxel *voxel) override;

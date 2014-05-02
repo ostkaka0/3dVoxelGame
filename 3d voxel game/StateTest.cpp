@@ -80,21 +80,21 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 	//shader->Bind();
 	//shader->Update(MVP);
 
-	for (int x = -4; x < 4; x++)
+	for (int x = -1; x < 1; x++)
 	{
 		for (int y = -1; y < 1; y++)
 		{
-			for (int z = -4; z < 4; z++)
+			for (int z = -1; z < 1; z++)
 			{
 				glm::mat4 ModelMatrix2 = glm::mat4(1.0);
 				ModelMatrix2 = glm::translate(ModelMatrix2, glm::vec3((float)x*voxels->getWidth(), (float)y*voxels->getHeight(), (float)z*voxels->getWidth()));
 				glm::mat4 MVP2 = Projection * View * ModelMatrix2;
-				renderer->RenderMatrix(voxels, MVP2);
+				renderer->RenderMatrix(voxels, MVP2, SHADER_DEFAULT);
 			}
 		}
 	}
 
-	renderer->RenderMatrix(torus, MVP);
+	renderer->RenderMatrix(torus, MVP, SHADER_SPACE);
 }
 
 void StateTest::Update(Game *game)

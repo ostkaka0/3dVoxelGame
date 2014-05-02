@@ -14,9 +14,9 @@ namespace world
 	}
 
 	// IRenderer
-	void World::Render(IRenderer *renderer, glm::mat4 MVP)
+	bool World::Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType)
 	{
-
+		return false;
 	}
 
 	// IWorld

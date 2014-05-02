@@ -9,6 +9,6 @@ class IRenderable
 {
 public:
 	virtual ~IRenderable() {}
-	virtual void Render(IRenderer *renderer, glm::mat4 MVP)=0;
+	virtual bool Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType)=0;
 	virtual ShaderType getShaderType() const=0;
 };

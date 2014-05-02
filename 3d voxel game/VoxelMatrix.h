@@ -14,6 +14,7 @@ public:
 	VoxelMatrix(const int width, const int height, const int depth);
 	VoxelMatrix(const int width, const int height, const int depth, IVoxel **voxels);
 
+	virtual bool Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType) override;
 	virtual ShaderType getShaderType() const override;
 
 	int getWidth();

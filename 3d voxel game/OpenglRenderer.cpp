@@ -26,11 +26,11 @@ OpenglRenderer::OpenglRenderer(Game *game, int width, int height)
 	glEnableVertexAttribArray(0);
 
 	std::string lol = std::string("MVP");
-	shader[SHADER_DEFAULT] = new Shader("default", &lol);
+	m_shaders[SHADER_DEFAULT] = new Shader("default", &lol);
 	std::string lol2[2];
 	lol2[0] = "MVP";
 	lol2[1] = "myTextureSampler";
-	shader[SHADER_SPACE] = new Shader("space", lol2);
+	m_shaders[SHADER_SPACE] = new Shader("space", lol2);
 	//MatrixID = shader->getMatrixId();
 }
 
@@ -44,7 +44,7 @@ OpenglRenderer::~OpenglRenderer()
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
-GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragmentFilePath, const char *geometryFilePath)
+/*GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragmentFilePath, const char *geometryFilePath)
 {
 	return 0;
 	/*GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -149,8 +149,8 @@ GLuint OpenglRenderer::LoadShaders(const char *vertexFilePath, const char *fragm
 
 	glUseProgram(ProgramID);
 
-	return ProgramID;*/
-}
+	return ProgramID;* /
+}*/
 
 #pragma region Matrix initializing
 
@@ -186,18 +186,26 @@ void OpenglRenderer::DeleteMatrix(GLuint matrixPtr, GLuint size)
 	glDeleteBuffers(size, &matrixPtr);
 }
 
-void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
+void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP, ShaderType shaderType)
 {
-	GLenum error;
+	//GLenum error;
 
+	matrix->Render(this, MVP, shaderType);
+
+#ifdef stupid
 	if (RenderableTerminal *mt = dynamic_cast<RenderableTerminal*>(matrix))
 	{
-		shader[mt->getShaderType()]->Bind();
 
-		if (mt->m_changed)
+		//m_shaders[mt->getShaderType()]->Bind();
+
+		#pragma region Old_code_that_should_not_be_here!
+			/*
+		if (mt->isChanged())
 		{
+
 			if (mt->m_vertexBuffer)
 				DeleteMatrix(mt->m_vertexBuffer, mt->m_size);
+
 
 #pragma region VoxelMatrix
 			if (typeid(*mt) == typeid(VoxelMatrix))
@@ -258,7 +266,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 								 4,   2,
 								 6,   7,
 								 4,   5,
-							};*/
+							};* /
 
 							//faces
 							const int vertexIds[36] =
@@ -373,13 +381,13 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z+0.5F));
 							g_vertex_buffer_data.push_back(Vertex(x+0.5F, y+0.5F, z-0.5F));
-							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));*/
+							g_vertex_buffer_data.push_back(Vertex(x-0.5F, y+0.5F, z+0.5F));* /
 
 
 #pragma endregion
 						}
 					}
-				}
+				}*/
 
 				/*for(Vertex &v : g_vertex_buffer_data)
 				{
@@ -390,7 +398,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 					b = (float)(rand()%256)/256.f;
 
 					v.SetColor(r, g, b, 1.0f);
-				}*/
+				}* /
 
 				// Give our vertices to OpenGL.
 				glBufferData(GL_ARRAY_BUFFER, g_vertex_buffer_data.size() * sizeof(Vertex), g_vertex_buffer_data.data(), GL_STATIC_DRAW);
@@ -467,7 +475,7 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 						//glTexCoord2d(u, v);
 						//glNormal3f(2 * x, 2 * y, 2 * z);
 						//glVertex3d(2 * x, 2 * y, 2 * z);
-						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-8, 2*z, (float)t/**matrix->texture.getHeight()*//cSeg,(float)s/*matrix->texture.getWidth()*//rSeg/2));
+						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-8, 2*z, (float)t/**matrix->texture.getHeight()* //cSeg,(float)s/*matrix->texture.getWidth()* //rSeg/2));
 					  }
 					}
 					//glEnd();
@@ -488,17 +496,20 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 
 #pragma endrgion
 		}
-
+		*/
+#pragma endregion
 
 			//if (xx == 0.f || true) // ändå dålig kod!
-		shader[matrix->getShaderType()]->Bind();
-		shader[matrix->getShaderType()]->Update(MVP);//glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		m_shaders[matrix->getShaderType()]->Bind();
+		m_shaders[matrix->getShaderType()]->Update(MVP);//glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		
 
+#pragma region bad_old_code
+		/*
 		if (typeid(*matrix) == typeid(Torus))
 		{
 			Torus *torus = reinterpret_cast<Torus*>(matrix);
-			GLint textureId = shader[matrix->getShaderType()]->getUniform(1);
+			GLint textureId = m_shaders[matrix->getShaderType()]->getUniform(1);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, torus->texture.getTextureId());
@@ -558,13 +569,14 @@ void OpenglRenderer::RenderMatrix(IRenderable *matrix, glm::mat4 MVP)
 			glDrawArrays(GL_TRIANGLES, 0, mt->m_size);
 
 			glDisableVertexAttribArray(0);
-			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(1);*/
+
 	}
 	else
 	{
 		matrix->Render(this, MVP);
 	}
-
+#endif stupid
 
 }
 
@@ -666,4 +678,10 @@ void OpenglRenderer::Render(GLFWwindow *window)
 	////
 	glfwPollEvents();
 }
+
+Shader *OpenglRenderer::getShader(ShaderType shaderType)
+{
+	return m_shaders[shaderType];
+}
+
 #endif

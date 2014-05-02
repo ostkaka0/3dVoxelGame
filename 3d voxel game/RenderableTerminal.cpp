@@ -18,7 +18,12 @@ RenderableTerminal::~RenderableTerminal()
 	}
 }
 
-void RenderableTerminal::Render(IRenderer *renderer, glm::mat4 MVP)
+bool RenderableTerminal::isChanged()
+{
+	return m_changed;
+}
+
+/*void RenderableTerminal::Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType)
 {
 	std::cout << "Unhandeld drawable terminal: " << typeid(*this).name() << std::endl;
-}
+}*/

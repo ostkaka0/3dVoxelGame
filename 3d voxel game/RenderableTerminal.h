@@ -4,18 +4,24 @@
 
 class RenderableTerminal : public IRenderable
 {
-public:
+protected:
 	GLuint m_colorVertexbuffer;
 	GLuint m_vertexBuffer;
 	GLuint m_size;
 	bool m_changed;
 	IRenderer *renderer;
 
+public:
+
 	//friend void IRenderer::RenderMatrix(IRenderable *matrix);
 //public:
 	//friend class IRenderer;
 
 	RenderableTerminal();
+
 	virtual ~RenderableTerminal() override;
-	virtual void Render(IRenderer *renderer, glm::mat4 MVP);
+
+	bool isChanged();
+
+	//virtual void Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType);
 };

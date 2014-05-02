@@ -14,6 +14,7 @@ private:
 	GLuint m_program;
 	GLuint m_shaders[NUM_SHADERS];
 	GLint *m_uniforms;
+	//const ShaderType shaderType;
 
 	Shader(const Shader &other) {};
 	Shader &operator=(const Shader &other) {};
