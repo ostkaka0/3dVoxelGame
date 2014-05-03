@@ -66,6 +66,19 @@ bool VoxelMatrix::Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderTy
 							b = 0.25f + (float)(rand()%64)/256.f;
 
 #pragma region cube2
+							const bool isVisible[6] = 
+							{
+								(getVoxel(x-1, y, z) == 0 || x == 0),
+								(getVoxel(x, y, z+1) == 0 || z == 15),
+								(getVoxel(x+1, y, z) == 0 || x == 15),
+								(getVoxel(x, y, z-1) == 0 || z == 0),
+								(getVoxel(x, y-1, z) == 0 || y == 0),
+								(getVoxel(x, y+1, z) == 0 || y == 15)
+							};
+
+							if (!(isVisible[0] || isVisible[1] || isVisible[2] || isVisible[3] || isVisible[4] || isVisible[5]))
+								continue;
+
 							const Vertex vertices[8] =
 							{
 								Vertex(x-0.5, y-0.5, z-0.5, r, g, b), Vertex(x-0.5, y-0.5, z+0.5, r, g, b),
@@ -109,15 +122,7 @@ bool VoxelMatrix::Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderTy
 								 2, 7, 3
 							};
 
-							const bool isVisible[6] = 
-							{
-								(getVoxel(x-1, y, z) == 0 || x == 0),
-								(getVoxel(x, y, z+1) == 0 || z == 15),
-								(getVoxel(x+1, y, z) == 0 || x == 15),
-								(getVoxel(x, y, z-1) == 0 || z == 0),
-								(getVoxel(x, y-1, z) == 0 || y == 0),
-								(getVoxel(x, y+1, z) == 0 || y == 15)
-							};
+
 
 							for(int i = 0; i < 36; i++)
 							{

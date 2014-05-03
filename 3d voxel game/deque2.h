@@ -1,4 +1,7 @@
+#pragma once
+
 #include <deque>
+#include <functional>
 
 template<class T>
 class Deque2
@@ -7,41 +10,49 @@ class Deque2
 	long m_centerIndex;
 public:
 
-	// Expand to node
-	void ExpandTo(const long index)
+	Deque2()
+		: m_centerIndex(0)
 	{
-		long newIndex = index ? m_centerIndex;
+
+	}
+
+	// Expand to node
+	void ExpandTo(const long index, std::function<T*()> constructor)
+	{
+		long newIndex = index + m_centerIndex;
 
 		if (newIndex < 0)
 		{
 			m_centerIndex -= newIndex;
 
 			for (int i = 0; i != newIndex; i--)
-				m_deque.push_front(nullptr);
+				m_deque.push_front(constructor());
 
 			newIndex = 0;
 		}
 		
 		if (newIndex >= m_deque.size())
 		{
-			for (int i = 0; i != m_deque.size(); i++)
-				m_deque.push_back(nullptr);
+			int size = (newIndex-m_deque.size());
+			for (int i = 0; i < size; i++)
+				m_deque.push_back(constructor());
 		}
 	}
 
 	// Remove empty nodes.
 	void Clean()
 	{
-		for (auto it = m_deque.rend(); it != m_deque.rbegin(); --it)
+		for (std::deque<T*>::const_reverse_iterator it = m_deque.rend(); it != m_deque.rbegin(); --it)
 		{
-			if (*it)
+			if (*it != nullptr)
 			{
-				m_deque.erase(++it, m_deque.rend());
+				m_deque.erase(it.base(), m_deque.end());
 				break;
 			}
 		}
 
-		for (auto it = m_deque.begin(), int i = 0; it != m_deque.end; ++it, ++i)
+		int i = 0;
+		for (auto it = m_deque.begin(); it != m_deque.end(); ++it)
 		{
 			if (*it)
 			{
@@ -49,13 +60,14 @@ public:
 				m_deque.erase(m_deque.begin(), --it);
 				break;
 			}
+			i++;
 		}
 	}
 
 	// Expand to index and return pointer to node to allow changes.
-	T **ExpandGet(const long index)
+	T **ExpandGet(const long index, std::function<T*()> constructor)
 	{
-		ExpandTo(index);
+		ExpandTo(index, constructor);
 		return &deque[index+m_centerIndex]
 	}
 
@@ -64,7 +76,7 @@ public:
 		long newIndex = index+m_centerIndex;
 
 		if (newIndex >= 0 && newIndex < m_deque.size())
-			return &deque[newIndex]
+			return &m_deque[newIndex];
 		else
 			return nullptr;
 	}

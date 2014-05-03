@@ -16,8 +16,8 @@ namespace world
 	class Chunk : public virtual IRenderable
 	{
 	protected:
-		VoxelMatrix *voxelMatrix;
-		Chunk **Neighbors[6];
+		VoxelMatrix *m_voxelMatrix;
+		Chunk (**m_neighbors)[6];
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// (Unimplemented system):
@@ -28,16 +28,16 @@ namespace world
 		// code:
 		// std::vector<std::weak_ptr<std::unique_ptr<Creature>> creatures;
 		///////////////////////////////////////////////////////////////////////////////////////////
-		std::vector<std::unique_ptr<IEntity>> entityVector;
+		//std::vector<std::unique_ptr<IEntity>> m_entityVector;
 
 	public:
-		Chunk(IGenerator *Generator, Chunk **Neighbors[6]);
+		Chunk(IGenerator *generator, Chunk (**neighbors)[6]);
 		virtual ~Chunk() override;
 		
 		void SetVoxel(unsigned char x, unsigned char y, unsigned char z, IVoxel *voxel);
 		IVoxel *getVoxel(unsigned char x, unsigned char y, unsigned char z);
 
-		virtual void Render(IRenderer *renderer, glm::mat4 MVP) override;
+		bool Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType) override;
 	};
 }
 

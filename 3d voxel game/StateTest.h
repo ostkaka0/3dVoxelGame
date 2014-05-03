@@ -5,6 +5,8 @@
 class VoxelMatrix;
 class Shader;
 class Torus;
+namespace world  { class World; }
+
 
 class StateTest : public State
 {
@@ -36,6 +38,8 @@ class StateTest : public State
 	// fps counter
 	double lastTime;
 	int nbFrames;
+
+	world::World *world;
 
 public:
 	virtual void Load(Game *game, EventHandler *eventHandler);

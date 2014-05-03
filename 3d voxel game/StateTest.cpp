@@ -10,6 +10,7 @@
 #include "VoxelMatrix.h"
 #include "Torus.h"
 #include "Shader.h"
+#include "World.h"
 
 void StateTest::Load(Game *game, EventHandler *eventHandler)
 {
@@ -72,6 +73,8 @@ void StateTest::Load(Game *game, EventHandler *eventHandler)
 	
 	lastTime = glfwGetTime();
 	nbFrames = 0;
+
+	world = new world::World();
 	
 }
 
@@ -80,7 +83,7 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 	//shader->Bind();
 	//shader->Update(MVP);
 
-	for (int x = -1; x < 1; x++)
+	/*for (int x = -1; x < 1; x++)
 	{
 		for (int y = -1; y < 1; y++)
 		{
@@ -92,7 +95,9 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 				renderer->RenderMatrix(voxels, MVP2, SHADER_DEFAULT);
 			}
 		}
-	}
+	}*/
+
+	renderer->RenderMatrix(world, MVP, SHADER_UNDEFINED);
 
 	renderer->RenderMatrix(torus, MVP, SHADER_SPACE);
 }
@@ -103,7 +108,7 @@ void StateTest::Update(Game *game)
      nbFrames++;
      if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1 sec ago
          // printf and reset timer
-         printf("%f ms/frame\n", 1000.0/double(nbFrames));
+         printf("%f ms/frame, FPS: %f\n", 1000.0/double(nbFrames), (double)nbFrames);
          nbFrames = 0;
          lastTime += 1.0;
      }

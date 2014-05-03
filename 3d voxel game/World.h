@@ -4,20 +4,24 @@
 
 #include "IWorld.h"
 #include "deque2.h"
+#include "Chunk.h"
 
 //#define DEQUE(...) std::deque<std::pair<__VA_ARGS__, long>>
 
-class Chunk;
+
 
 namespace world
 {
+	class Chunk;
+
 	class World : public virtual IWorld
 	{
 	protected:
-		Deque2<Deque2<Deque2<Chunk>>> chunkMatrix;//DEQUE(DEQUE(DEQUE(Chunk*))) chunkMatrix;
+		Deque2<Deque2<Deque2<world::Chunk>>> m_chunkMatrix;//DEQUE(DEQUE(DEQUE(Chunk*))) chunkMatrix;
+		//std::vector<WorldChild*>
 	public:
-		World(void);
-		virtual ~World(void);
+		World();
+		virtual ~World() override;
 
 		// IRenderer
 		virtual bool Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType) override;

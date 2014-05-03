@@ -27,6 +27,7 @@ void GameTest::Initialize()
 	renderer = new OpenglRenderer(this, width, height);
 	//renderer->LoadShaders("vertexshader.glsl", "fragmenshader.glsl", "geometryshader.glsl");
 	glEnable(GL_DEPTH_TEST);
+	glfwSwapInterval(0);
 	//glFrustum(-0.1,0.1,-0.1,0.1,0.1,1024);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glEnable( GL_BLEND );

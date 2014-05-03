@@ -153,6 +153,9 @@
     <ClCompile Include="stb_image.c">
       <Filter>Source Files\Graphics\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h">

@@ -78,7 +78,7 @@ void Game::Start()
 	//glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(800, 600, "Voxel Engine", nullptr, nullptr);
+	window = glfwCreateWindow(1200, 900, "Voxel Engine", nullptr, nullptr);
 
 	if (!window)
 	{
@@ -126,6 +126,7 @@ void Game::Start()
 
 	glfwSetCharCallback(window, [](GLFWwindow *window, unsigned int character)
 		{ Game::getGame()->CharCallback(character); });
+
 #pragma endregion
 
 #pragma region window callbacks

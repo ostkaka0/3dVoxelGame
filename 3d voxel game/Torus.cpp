@@ -3,7 +3,7 @@
 #include "Vertex2.h"
 
 Torus::Torus(void)
-	:texture("Jellyfish.bmp")
+	:texture("europa.bmp")
 {
 }
 
@@ -42,8 +42,8 @@ bool Torus::Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType)
  
 				  const double PI = 3.1415926535897932384626433832795;
 				  const double TAU = 2 * PI;
-				  const int rSeg = 64;//128;
-				  const int cSeg = 128;//256;
+				  const int rSeg = 128;
+				  const int cSeg = 256;
 				  const double c = 32000.f;
 				  const double r = 8000.f;
  
@@ -73,7 +73,7 @@ bool Torus::Render(IRenderer *renderer, glm::mat4 MVP, ShaderType shaderType)
 						//glTexCoord2d(u, v);
 						//glNormal3f(2 * x, 2 * y, 2 * z);
 						//glVertex3d(2 * x, 2 * y, 2 * z);
-						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-8, 2*z, (float)t/**matrix->texture.getHeight()*//cSeg,(float)s/*matrix->texture.getWidth()*//rSeg));
+						g_vertex_buffer_data.push_back(Vertex2(2*x, 2*y+2*c-2*r-128, 2*z, (float)t/**matrix->texture.getHeight()*//cSeg,(float)s/*matrix->texture.getWidth()*//rSeg));
 					  }
 					}
 					//glEnd();
