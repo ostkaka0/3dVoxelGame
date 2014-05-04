@@ -9,6 +9,7 @@ namespace world
 		m_neighbors = neighbors;
 		m_voxelMatrix = new VoxelMatrix(16, 16, 16);
 		m_voxelMatrix->setVoxel(1,1,1, new FreeColor());
+		m_voxelMatrix->setVoxel(1,2,1, new FreeColor());
 	}
 
 	Chunk::~Chunk()
