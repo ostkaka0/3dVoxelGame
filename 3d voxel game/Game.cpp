@@ -180,7 +180,7 @@ void Game::Start()
 #endif
 	}
 	this->Exit();
-}
+}//reading + listening V21 AUTLAN 145
 
 void Game::Exit()
 {

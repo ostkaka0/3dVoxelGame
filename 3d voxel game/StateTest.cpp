@@ -97,6 +97,12 @@ void StateTest::Draw(Game *game, IRenderer *renderer)
 		}
 	}*/
 
+	for (int i = 0; i < 1000; ++i)
+	{
+		renderer->getShader(SHADER_DEFAULT)->Bind();
+		renderer->getShader(SHADER_SPACE)->Bind();
+	}
+
 	renderer->RenderMatrix(world, MVP, SHADER_UNDEFINED);
 
 	renderer->RenderMatrix(torus, MVP, SHADER_SPACE);

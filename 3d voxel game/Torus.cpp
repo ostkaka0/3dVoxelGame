@@ -3,7 +3,7 @@
 #include "Vertex2.h"
 
 Torus::Torus(void)
-	:texture("europa.bmp")
+	:texture("Jellyfish.bmp")
 {
 }
 
